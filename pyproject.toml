@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "beer_finder"
+version = "0.1.0"
+description = ""
+authors = ["Stas Cartoon <bycs@mail.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "4.0.5"
+djangorestframework = "3.13.1"
+pydantic = "1.9.1"
+psycopg2-binary = "2.9.3"
+beautifulsoup4 = "4.11.1"
+requests = "2.28.0"
+
+[tool.poetry.dev-dependencies]
+black = "22.3.0"
+flake8 = "4.0.1"
+pyproject-flake8 = "0.0.1-alpha.4"
+flake8-black = "0.3.3"
+flake8-builtins = "1.5.3"
+flake8-import-order = "0.18.1"
+pre-commit = "2.19.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+exclude = """
+    ('
+    |.idea/
+    |.venv/
+    |.vscode/
+    ')
+"""
+
+# call using pflake8
+[tool.flake8]
+max-line-length = 100
+max-complexity = 4
+ignore = "A003, W503"
+exclude = """
+    .idea/
+    .venv/
+    .vscode/
+    */migrations/
+"""
+
+[virtualenvs]
+create = true
+in-project = true
+path = ".venv"
