@@ -39,7 +39,7 @@ exclude = """
 # call using pflake8
 [tool.flake8]
 max-line-length = 100
-max-complexity = 4
+max-complexity = 8
 ignore = "A003, W503"
 exclude = """
     .idea/
