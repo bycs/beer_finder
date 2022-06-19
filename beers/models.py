@@ -1,3 +1,5 @@
+from beers.managers import BeerManager
+
 from django.db import models
 
 
@@ -30,6 +32,8 @@ class Beer(models.Model):
     description = models.TextField()
     specifications = models.JSONField(default=dict)
     bar = models.ForeignKey(Bar, on_delete=models.CASCADE)
+
+    beer_data_managers = BeerManager()
 
     def __str__(self):
         return self.name
