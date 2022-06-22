@@ -7,29 +7,29 @@ import django.db.models.manager
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('beers', '0002_alter_beer_managers_alter_bar_name_and_more'),
+        ("beers", "0002_alter_beer_managers_alter_bar_name_and_more"),
     ]
 
     operations = [
         migrations.AlterModelManagers(
-            name='beer',
+            name="beer",
             managers=[
-                ('beer_managers', django.db.models.manager.Manager()),
+                ("beer_managers", django.db.models.manager.Manager()),
             ],
         ),
         migrations.AlterField(
-            model_name='beer',
-            name='description',
+            model_name="beer",
+            name="description",
             field=models.TextField(null=True),
         ),
         migrations.AlterField(
-            model_name='beer',
-            name='price',
+            model_name="beer",
+            name="price",
             field=models.IntegerField(null=True),
         ),
         migrations.AlterField(
-            model_name='beer',
-            name='specifications',
+            model_name="beer",
+            name="specifications",
             field=models.JSONField(default=dict, null=True),
         ),
     ]
