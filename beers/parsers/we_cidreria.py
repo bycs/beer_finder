@@ -4,44 +4,43 @@ from beers.parsers.base import get_html
 
 from bs4 import BeautifulSoup
 
+base_url_beer = "https://we-cidreria.ru/menu/beer"
+base_url_cidr = "https://we-cidreria.ru/menu/ciders"
 
-def get_beers_cidreria():
+
+def get_beers_we_cidreria():
     """Получение данных о пиве."""
-    html = get_html("https://we-cidreria.ru/menu/beer")
+    html = get_html(base_url_beer)
     soup = BeautifulSoup(html, "html.parser")
-    all_beer = soup.find("div", class_="catalog-element-list").find_all(
-        "div", class_="catalog-element-item"
-    )
+    all_beers = soup.find_all("div", class_="catalog-element-item")
     beer_list = []
-    for beer in all_beer:
+    for beer in all_beers:
         name = beer.find("div", class_="catalog-element-name").text
         description = beer.find("p", class_="catalog-element-ru").text
         strenght = beer.find("div", class_="catalog-element-weight").text
 
-        price_soup = beer.find("div", class_="catalog-element-price-value").text
+        size = beer.find("div", class_="catalog-element-price-item").text
+        cost = beer.find("div", class_="catalog-element-price-value").text
+        size = re.findall(r"\d+,\d+", size)
+        cost = re.findall(r"\d+", cost)
         price_list = []
-        price_soup = price_soup.replace("\n", "")
-        price_soup = price_soup.replace("/", " ")
-        price_soup = price_soup.replace("Р", "")
-        for price in price_soup:
-            sums = re.findall("[0-9]+", price_soup)
-            if len(sums) >= 1:
-                sum1 = int(sums[0])
-                price_list.append(int((sum1 * 2) * 1000))
-            else:
-                price_soup = None
-                break
-
+        for i in range(len(size)):
+            cost_item = int(cost[i])
+            size_item = float(size[i].replace(",", "."))
+            price_item = int(100 * cost_item / size_item)
+            price_list.append(price_item)
         if price_list:
-            price_soup = min(price_list)
+            price = min(price_list)
+        else:
+            price = None
 
+        specifications_dict = {"Крепость": strenght}
         beer_list.append(
             {
                 "name": name,
-                "price": price_soup,
+                "price": price,
                 "description": description,
-                "strenght": strenght,
+                "specifications": specifications_dict,
             }
         )
-
     return beer_list
