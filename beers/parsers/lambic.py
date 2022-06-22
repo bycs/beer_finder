@@ -1,10 +1,10 @@
 import re
 
-from beers.parsers.base import clear_text, get_html
+from beers.parsers.base import get_html
 
 from bs4 import BeautifulSoup
 
-base_url = "https://lambic.ru"
+url_base = "https://lambic.ru"
 list_urls_for_parce = ["/beer/draft"]
 
 
@@ -27,13 +27,14 @@ def get_data_lambic(html: str) -> list:
         name = beer.find("a", class_="beer-link").text
 
         description = beer.find("div", class_="beer-desc").text
-        description = clear_text(description)
-
-        category = soup.find("li", class_="contentmenu-item is-active").text
+        description = description.replace("\n", "")
+        description = description.replace("\r", " ")
+        description = description.replace("\xa0", " ")
+        description = description.strip()
 
         specifications = beer.find("div", class_="beer-specifications").text
         specifications = specifications.split("\n")
-        specifications_dict = {"Категория": category.capitalize()}
+        specifications_dict = {}
         for specification in specifications:
             if specification:
                 specification = specification.split(":")
@@ -59,7 +60,7 @@ def get_data_lambic(html: str) -> list:
                 "name": name,
                 "price": price,
                 "description": description,
-                "specifications": specifications_dict,
+                "specifications_dict": specifications_dict,
             }
         )
 
@@ -69,6 +70,9 @@ def get_data_lambic(html: str) -> list:
 def get_all_beers_lambic(base_url: str, list_urls_for_parce: list) -> list:
     """Получение данных о всем пиве."""
     html = get_html(f"{base_url}{list_urls_for_parce[0]}")
+    print(base_url)
+    print(list_urls_for_parce[0])
+    print(f"{base_url}{list_urls_for_parce[0]}")
     all_beers = []
     list_urls_for_parce = get_urls_list_lambic(html)
     all_beers += get_data_lambic(html)
