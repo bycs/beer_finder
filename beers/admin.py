@@ -1,4 +1,5 @@
-from beers.models import Bar, BarBranch, Beer
+from beers.models.bars import Bar, BarBranch
+from beers.models.beers import Beer
 
 from django.contrib import admin
 
