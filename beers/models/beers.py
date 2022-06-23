@@ -11,6 +11,10 @@ class Beer(models.Model):
     specifications = models.JSONField(default=dict, null=True)
     bar = models.ForeignKey(Bar, on_delete=models.CASCADE)
 
+    @property
+    def price_rub(self):
+        return self.price / 100
+
     beer_managers = BeerManager()
 
     def __str__(self):
