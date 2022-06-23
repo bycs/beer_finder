@@ -42,17 +42,16 @@ def get_data_lambic(html: str) -> list:
         price_soup = beer.find("div", class_="beer-price").find_all("li")
         price_list = []
         for price in price_soup:
-            size_and_sum = re.findall("[0-9]+", price.text)
-            if len(size_and_sum) > 1:
-                size = int(size_and_sum[0])
-                cost = int(size_and_sum[1])
+            size_and_cost = re.findall(r"\d+", price.text)
+            if len(size_and_cost) > 1:
+                size = int(size_and_cost[0])
+                cost = int(size_and_cost[1])
                 price_list.append(int(100 * cost / size * 1000))
-            else:
-                price = None
-                break
 
         if price_list:
             price = min(price_list)
+        else:
+            price = None
 
         beer_list.append(
             {
