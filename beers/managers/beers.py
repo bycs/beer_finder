@@ -17,5 +17,5 @@ class BeerManager(models.Manager):
             for beer in beers
         ]
         with transaction.atomic():
-            self.filter(self.model.bar == current_bar.pk).delete()
+            self.filter(bar=current_bar.pk).delete()
             self.bulk_create(objs)
