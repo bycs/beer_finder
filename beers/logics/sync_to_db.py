@@ -1,6 +1,6 @@
-from beers.parsers.lambic import get_all_beers_lambic, base_url, list_urls_for_parce
-from beers.parsers.we_cidreria import get_beers_we_cidreria
 from beers.models.beers import Beer
+from beers.parsers.lambic import base_url, get_all_beers_lambic, list_urls_for_parce
+from beers.parsers.we_cidreria import get_beers_we_cidreria
 
 
 def sync_lambic():

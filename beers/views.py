@@ -1,7 +1,7 @@
-from django.http import HttpResponse
-
 from beers.decorators import staff_required
 from beers.logics import sync_to_db
+
+from django.http import HttpResponse
 
 
 @staff_required
