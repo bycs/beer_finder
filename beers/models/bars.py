@@ -18,6 +18,10 @@ class BarBranch(models.Model):
     address = models.CharField(max_length=255, unique=True)
     metro = models.CharField(max_length=255)
 
+    @property
+    def bar_branch_name(self):
+        return f"{self.bar.name} - {self.metro}"
+
     def __str__(self):
         return f"{self.bar.name} - {self.metro}"
 

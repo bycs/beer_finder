@@ -6,12 +6,15 @@ from django.contrib import admin
 
 class BarAdmin(admin.ModelAdmin):
     model = Bar
-    list_display = ("name", "website")
+    list_display = ("name", "website", "updated")
+    search_fields = ("name", "website")
 
 
 class BarBranchAdmin(admin.ModelAdmin):
     model = BarBranch
-    list_display = ("bar", "metro")
+    list_display = ("bar_branch_name", "address")
+    list_filter = ("bar__name", "metro")
+    search_fields = ("bar__name", "metro", "address")
 
 
 class BeerAdmin(admin.ModelAdmin):
