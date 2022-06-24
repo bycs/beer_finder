@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from beers.models.bars import Bar
 
 from django.db import models, transaction
@@ -16,6 +18,8 @@ class BeerManager(models.Manager):
             )
             for beer in beers
         ]
+        current_bar.updated = datetime.now()
         with transaction.atomic():
             self.filter(bar=current_bar.pk).delete()
             self.bulk_create(objs)
+            current_bar.save()

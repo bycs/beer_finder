@@ -4,6 +4,7 @@ from django.db import models
 class Bar(models.Model):
     name = models.CharField(max_length=255, unique=True)
     website = models.URLField(unique=True)
+    updated = models.DateTimeField(null=True, default=None)
 
     def __str__(self):
         return self.name
