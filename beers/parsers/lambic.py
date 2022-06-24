@@ -24,7 +24,7 @@ def get_data_lambic(html: str) -> list:
     all_beer = soup.find("div", class_="beer-list").find_all("div", class_="beer")
     beer_list = []
     for beer in all_beer:
-        name = beer.find("a", class_="beer-link").text
+        name = beer.find("a", class_="beer-link").text.strip()
 
         description = beer.find("div", class_="beer-desc").text
         description = clear_text(description)
