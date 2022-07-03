@@ -1,6 +1,6 @@
 import re
 
-from beers.parsers.base import get_html
+from beers.parsers.base import clear_text, get_html
 
 from bs4 import BeautifulSoup
 
@@ -11,37 +11,44 @@ def get_beers_we_pub():
     """Получение данных о пиве."""
     html = get_html(base_url_beer)
     soup = BeautifulSoup(html, "html.parser")
-    all_beers = soup.find_all("div", class_="catalog-element-item")
+    soup = soup.find("div", class_="catalog-element-list")
+    all_category = soup.find_all("div", class_="catalog-element-section-name")
+    all_beers = soup.find_all("div", class_="catalog-element-section-list")
     beer_list = []
-    for beer in all_beers:
-        name = beer.find("div", class_="catalog-element-name").text.replace("/", "").strip()
-        description = beer.find("div", class_="catalog-element-desc").text
-        size = beer.find("div", class_="catalog-element-weight").text
-        cost = beer.find("div", class_="catalog-element-price").text
-        size = re.findall(r"\d+,\d+", size)
-        cost = re.findall(r"\d+", cost)
-        price_list = []
-        for i in range(len(size)):
-            cost_item = int(cost[i])
-            size_item = float(size[i].replace(",", "."))
-            price_item = int(100 * cost_item / size_item)
-            price_list.append(price_item)
+    for i in range(len(all_category)):
+        category = all_category[i].text
+        specifications_dict = {"Категория": category.capitalize()}
+        beers = all_beers[i].find_all("div", class_="catalog-element-item")
+        for beer in beers:
+            name = beer.find("div", class_="catalog-element-name").text
+            name = clear_text(name)
+            description = beer.find("div", class_="catalog-element-desc").text
+            other_info = description.split(". ")[-1]
+            other_info = other_info.split(".,")
+            if len(other_info) > 1:
+                strenght = other_info[0]
+                specifications_dict["Крепость"] = strenght
+                other_info = other_info[1].split(",")
+                if len(other_info) > 1:
+                    brewery = other_info[0].strip()
+                    country = other_info[1].strip()
+                    specifications_dict["Изготовитель"] = brewery
+                    specifications_dict["Страна"] = country
 
-        if price_list:
-            price = min(price_list)
-        if size_item > 0.3:
-            price_list.append(price_item)
-        else:
-            price = None
-        beer_list.append(
-            {
-                "name": name,
-                "price": price,
-                "description": description,
-            }
-        )
-        for i in range(len(beer_list)):
-            if beer_list[i]["price"] is None:
-                del beer_list[i]
+            size = beer.find("div", class_="catalog-element-weight").text
+            size = size.replace("мл", "")
+            size = float(size.replace(",", "."))
+            cost = beer.find("div", class_="catalog-element-price").text
+            cost = int(re.findall(r"\d+", cost)[0])
+            price = int(100 * cost / size)
 
+            if 0.3 <= size < 3:
+                beer_list.append(
+                    {
+                        "name": name,
+                        "price": price,
+                        "description": description,
+                        "specifications": specifications_dict,
+                    }
+                )
     return beer_list
