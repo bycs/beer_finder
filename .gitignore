@@ -2,6 +2,9 @@
 .vscode/
 .idea/
 
+# F/E
+*/node_modules/*
+
 # Vagrant
 .vagrant/
 
