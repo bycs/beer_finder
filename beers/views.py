@@ -8,4 +8,5 @@ from django.http import HttpResponse
 def sync_all_beers(request):
     sync_to_db.sync_lambic()
     sync_to_db.sync_we_cidreria()
+    sync_to_db.sync_we_pub()
     return HttpResponse("Все ок!")
