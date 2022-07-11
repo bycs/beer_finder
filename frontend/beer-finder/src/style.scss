@@ -28,5 +28,117 @@ body {
 
     }
 
+    .search__buttons-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 30px;
+    }
 
+    .contact__wrapper {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+
+        .contact__list {
+        padding: 0;
+        }
+    }
+
+    .input-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 40px;
+    }
+    
+
+    .result {
+        padding-top: 20px;
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+        flex-wrap: wrap;
+
+        .card {
+            max-width: 320px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+
+            .specification {
+                padding: 5px;
+            }
+        }
+    }
+    .single-result {
+        
+
+        .single-result__wrapper {
+        padding: 20px 0;
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+        .single-result__title {
+            display: flex;
+        
+            flex-direction: column;
+
+            .single-result__image {
+                border-radius: 50%;
+            }
+        }
+        .single-result__info {
+            display: flex;
+            align-items: center;
+        }
+        }
+    }
+
+    .addictional {
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+        max-width: 800px;
+        justify-content: center;
+        .addictional__info {
+            padding: 0;
+        }
+    }
+
+
+    .fortune-wheel__buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+        justify-content: center;
+        padding-bottom: 30px;
+
+    }
+
+    .wheel-animation {
+        display: flex;
+        justify-content: center;
+    } 
+
+    
+    .single-product {
+        display: flex;
+        flex-direction: column;
+
+        .single-product__title {
+            text-align: center;
+        }
+
+        .single-product__wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+        }
+
+        .map {
+            padding: 20px 0;
+        }
+    }
 }
