@@ -2,7 +2,7 @@ from beers.decorators import staff_required
 from beers.logics import sync_to_db
 from beers.models.bars import Bar, BarBranch
 from beers.models.beers import Beer
-from beers.serializers import BarSerializer, BarBranchSerializer, BeerSerializer
+from beers.serializers import BarBranchSerializer, BarSerializer, BeerSerializer
 
 from django.http import HttpResponse
 
