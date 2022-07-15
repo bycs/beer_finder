@@ -1,7 +1,8 @@
 from beers.decorators import staff_required
 from beers.logics import sync_to_db
+from beers.models.bars import Bar, BarBranch
 from beers.models.beers import Beer
-from beers.serializers import BeerSerializer
+from beers.serializers import BarBranchSerializer, BarSerializer, BeerSerializer
 
 from django.http import HttpResponse
 
@@ -19,3 +20,13 @@ def sync_all_beers(request):
 class BeersViewSet(viewsets.ModelViewSet):
     queryset = Beer.beer_managers.all().order_by("name")
     serializer_class = BeerSerializer
+
+
+class BarsViewSet(viewsets.ModelViewSet):
+    queryset = Bar.objects.all().order_by("name")
+    serializer_class = BarSerializer
+
+
+class BarBranchesViewSet(viewsets.ModelViewSet):
+    queryset = BarBranch.objects.all().order_by("bar__name")
+    serializer_class = BarBranchSerializer

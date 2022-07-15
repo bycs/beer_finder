@@ -5,7 +5,9 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r"", views.BeersViewSet, basename="beers")
+router.register(r"beers", views.BeersViewSet, basename="beers")
+router.register(r"bars", views.BarsViewSet, basename="bars")
+router.register(r"bar_branches", views.BarBranchesViewSet, basename="bar_branches")
 
 urlpatterns = [
     path("", include(router.urls)),
