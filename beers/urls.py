@@ -11,5 +11,6 @@ router.register(r"bar_branches", views.BarBranchesViewSet, basename="bar_branche
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("top_spec_beers/", views.top_spec_beers, name="top_spec_beers"),
     path("sync_all_beers/", views.sync_all_beers, name="sync_all_beers"),
 ]
