@@ -20,6 +20,19 @@ def sync_all_beers(request):
 
 
 @api_view(["GET"])
+def filter_beers(request, bar_id: int | None = None, **kwargs: list[dict[str, str]]):
+    if bar_id is None:
+        beers = Beer.beer_managers.all()
+    else:
+        beers = Beer.beer_managers.filter(bar_id=bar_id)
+    if kwargs:
+        for key, value in kwargs.items():
+            beers = beers.filter(specifications__contains={key: value})
+    serializer = BeerSerializer(beers, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
 def top_spec_beers(request):
     queryset = Beer.beer_managers.all().values("specifications")
     specifications = [item["specifications"] for item in queryset]
