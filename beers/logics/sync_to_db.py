@@ -1,7 +1,7 @@
 from beers.models.beers import Beer
 from beers.parsers.lambic import base_url, get_all_beers_lambic, list_urls_for_parce
-from beers.parsers.we_cidreria import get_beers_we_cidreria
-from beers.parsers.we_pub import get_beers_we_pub
+from beers.parsers.we_cidreria import get_all_we_cidreria
+from beers.parsers.we_pub import WePub
 
 
 def sync_lambic():
@@ -10,10 +10,10 @@ def sync_lambic():
 
 
 def sync_we_cidreria():
-    beers = get_beers_we_cidreria()
+    beers = get_all_we_cidreria()
     Beer.beer_managers.sync_bar_beers_to_db("We Cidreria", beers)
 
 
 def sync_we_pub():
-    beers = get_beers_we_pub()
-    Beer.beer_managers.sync_bar_beers_to_db("WE Pub", beers)
+    we_pub = WePub("We Pub", "https://we-pub.ru/beers/")
+    we_pub.run()
