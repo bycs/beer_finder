@@ -13,6 +13,8 @@ class Beer(models.Model):
 
     @property
     def price_rub(self):
+        if self.price is None:
+            return None
         return self.price / 100
 
     beer_managers = BeerManager()

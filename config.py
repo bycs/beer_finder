@@ -1,5 +1,9 @@
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 DEBUG = int(os.getenv("DEBUG", 0))
 DJANGO_SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DJANGO_ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(" ")
