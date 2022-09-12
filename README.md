@@ -28,3 +28,8 @@
   poetry config virtualenvs.in-project true
   poetry install
   ```
+
+* pre-commit
+  ```sh
+  pre-commit install
+  ```
