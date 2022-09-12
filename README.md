@@ -30,6 +30,6 @@
   ```
 
 * pre-commit
-```sh
-pre-commit install
-```
+  ```sh
+  pre-commit install
+  ```
