@@ -6,8 +6,8 @@ from bs4 import BeautifulSoup
 
 
 class WePub(BaseBar):
-    name = "We Pub"
-    url = "https://we-pub.ru/beer/"
+    name = "WE Pub"
+    urls = ["https://we-pub.ru/beer/"]
 
     def parse_data(self, unparsed_data: str):
         soup = BeautifulSoup(unparsed_data, "html.parser")
