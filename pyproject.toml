@@ -17,10 +17,9 @@ python-dotenv = "0.21.0"
 [tool.poetry.dev-dependencies]
 black = "22.3.0"
 flake8 = "4.0.1"
-pyproject-flake8 = "0.0.1-alpha.4"
+pyproject-flake8 = "4.0.1"
 flake8-black = "0.3.3"
 flake8-builtins = "1.5.3"
-flake8-import-order = "0.18.1"
 pre-commit = "2.19.0"
 
 [build-system]
