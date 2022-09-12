@@ -1,9 +1,12 @@
+from collections import Counter
+
 from beers.decorators import staff_required
 from beers.logics import sync_to_db
 from beers.models.bars import Bar, BarBranch
 from beers.models.beers import Beer
 from beers.serializers import BarBranchSerializer, BarSerializer, BeerSerializer
 
+from django.db.models import Func
 from django.http import HttpResponse
 
 from rest_framework import viewsets
@@ -33,7 +36,7 @@ def filter_beers(request, bar_id: int | None = None, **kwargs: list[dict[str, st
 
 
 @api_view(["GET"])
-def top_spec_beers(request):
+def top_spec_beers_v1(request):
     queryset = Beer.objects.all().values("specifications")
     specifications = [item["specifications"] for item in queryset]
     keys = set()
@@ -49,6 +52,20 @@ def top_spec_beers(request):
     key_count = dict(sorted(key_count.items(), key=lambda item: item[1], reverse=True))
     top_keys = list(key_count.keys())[:7]
     return Response(data=top_keys)
+
+
+@api_view(["GET"])
+def top_spec_beers_v2(request):
+    class JsonKeys(Func):
+        function = "jsonb_object_keys"
+
+    json_keys = Beer.objects.all().annotate(metadata_keys=JsonKeys("specifications"))
+    json_keys = json_keys.values_list("metadata_keys", flat=True)
+    print("#" * 80)
+    top_keys = dict(Counter(json_keys))
+    sorted_keys = dict(sorted(top_keys.items(), key=lambda x: x[1], reverse=True))
+    print((sorted_keys))
+    return Response(data=sorted_keys)
 
 
 class BeersViewSet(viewsets.ModelViewSet):
