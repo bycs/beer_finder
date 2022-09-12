@@ -7,7 +7,10 @@ from bs4 import BeautifulSoup
 
 class WePub(BaseBar):
     name = "WE Pub"
-    urls = ["https://we-pub.ru/beer/"]
+
+    @property
+    def urls(self) -> list[str]:
+        return ["https://we-pub.ru/beer/"]
 
     def parse_data(self, unparsed_data: str):
         soup = BeautifulSoup(unparsed_data, "html.parser")
