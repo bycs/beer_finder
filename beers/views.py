@@ -61,10 +61,8 @@ def top_spec_beers_v2(request):
 
     json_keys = Beer.objects.all().annotate(metadata_keys=JsonKeys("specifications"))
     json_keys = json_keys.values_list("metadata_keys", flat=True)
-    print("#" * 80)
     top_keys = dict(Counter(json_keys))
     sorted_keys = dict(sorted(top_keys.items(), key=lambda x: x[1], reverse=True))
-    print((sorted_keys))
     return Response(data=sorted_keys)
 
 
