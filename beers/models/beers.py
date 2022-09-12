@@ -17,7 +17,7 @@ class Beer(models.Model):
             return None
         return self.price / 100
 
-    beer_managers = BeerManager()
+    objects = BeerManager()
 
     def __str__(self):
         return self.name

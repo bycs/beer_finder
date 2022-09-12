@@ -1,9 +1,12 @@
+from collections import Counter
+
 from beers.decorators import staff_required
 from beers.logics import sync_to_db
 from beers.models.bars import Bar, BarBranch
 from beers.models.beers import Beer
 from beers.serializers import BarBranchSerializer, BarSerializer, BeerSerializer
 
+from django.db.models import Func
 from django.http import HttpResponse
 
 from rest_framework import viewsets
@@ -22,9 +25,9 @@ def sync_all_beers(request):
 @api_view(["GET"])
 def filter_beers(request, bar_id: int | None = None, **kwargs: list[dict[str, str]]):
     if bar_id is None:
-        beers = Beer.beer_managers.all()
+        beers = Beer.objects.all()
     else:
-        beers = Beer.beer_managers.filter(bar_id=bar_id)
+        beers = Beer.objects.filter(bar_id=bar_id)
     if kwargs:
         for key, value in kwargs.items():
             beers = beers.filter(specifications__contains={key: value})
@@ -33,8 +36,8 @@ def filter_beers(request, bar_id: int | None = None, **kwargs: list[dict[str, st
 
 
 @api_view(["GET"])
-def top_spec_beers(request):
-    queryset = Beer.beer_managers.all().values("specifications")
+def top_spec_beers_v1(request):
+    queryset = Beer.objects.all().values("specifications")
     specifications = [item["specifications"] for item in queryset]
     keys = set()
     keys_list = []
@@ -51,8 +54,22 @@ def top_spec_beers(request):
     return Response(data=top_keys)
 
 
+@api_view(["GET"])
+def top_spec_beers_v2(request):
+    class JsonKeys(Func):
+        function = "jsonb_object_keys"
+
+    json_keys = Beer.objects.all().annotate(metadata_keys=JsonKeys("specifications"))
+    json_keys = json_keys.values_list("metadata_keys", flat=True)
+    print("#" * 80)
+    top_keys = dict(Counter(json_keys))
+    sorted_keys = dict(sorted(top_keys.items(), key=lambda x: x[1], reverse=True))
+    print((sorted_keys))
+    return Response(data=sorted_keys)
+
+
 class BeersViewSet(viewsets.ModelViewSet):
-    queryset = Beer.beer_managers.all().order_by("name")
+    queryset = Beer.objects.all().order_by("name")
     serializer_class = BeerSerializer
     http_method_names = ("get",)
 
