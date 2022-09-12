@@ -46,7 +46,7 @@ class BaseBar:
 
     def _save_data(self, parsed_data):
         Beer.beer_managers.sync_bar_beers_to_db(self.name, parsed_data)
-        print(f"Save data {parsed_data} to database from {self.__class__.__name__}")
+        print(f"Save {len(parsed_data)} objects to database from {self.__class__.__name__}")
 
     def get_data(self) -> list[UnparsedData]:
         result = []
