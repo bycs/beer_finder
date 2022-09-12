@@ -34,7 +34,10 @@ class UnparsedData:
 
 class BaseBar:
     name: str
-    urls: list[str]
+
+    @property
+    def urls(self) -> list[str]:
+        raise NotImplementedError
 
     def _get_data(self):
         print(f"Getting {self.__class__.__name__} data from source {self.urls}...")

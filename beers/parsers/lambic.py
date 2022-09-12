@@ -5,22 +5,22 @@ from beers.parsers.base import BaseBar, clear_text, get_html
 from bs4 import BeautifulSoup
 
 
-def get_urls_lambic() -> list[str]:
-    """Получение списка ссылок на различные сорта пива."""
-    base_url = "https://lambic.ru"
-    urls = ["https://lambic.ru/beer/draft"]
-    html = get_html(urls[0])
-    soup = BeautifulSoup(html, "html.parser")
-    all_urls = soup.find("ul", class_="contentmenu-list").find_all("li", class_="contentmenu-item")
-    for url_item in all_urls[1:]:
-        url = url_item.find("a")["href"]
-        urls.append(f"{base_url}{url}")
-    return urls
-
-
 class Lambic(BaseBar):
     name = "Lambic"
-    urls = get_urls_lambic()
+
+    @property
+    def urls(self) -> list[str]:
+        base_url = "https://lambic.ru"
+        urls = ["https://lambic.ru/beer/draft"]
+        html = get_html(urls[0])
+        soup = BeautifulSoup(html, "html.parser")
+        all_urls = soup.find("ul", class_="contentmenu-list").find_all(
+            "li", class_="contentmenu-item"
+        )
+        for url_item in all_urls[1:]:
+            url = url_item.find("a")["href"]
+            urls.append(f"{base_url}{url}")
+        return urls
 
     def parse_data(self, unparsed_data: str):
         soup = BeautifulSoup(unparsed_data, "html.parser")
