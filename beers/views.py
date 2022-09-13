@@ -1,6 +1,5 @@
 from collections import Counter
 
-from django.db.models import Func
 from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
@@ -8,6 +7,7 @@ from rest_framework.response import Response
 
 from beers.decorators import staff_required
 from beers.logics import sync_to_db
+from beers.managers.beers import JsonKeys
 from beers.models.bars import Bar
 from beers.models.bars import BarBranch
 from beers.models.beers import Beer
@@ -59,9 +59,6 @@ def top_spec_beers_v1(request) -> Response:
 
 @api_view(["GET"])
 def top_spec_beers_v2(request) -> Response:
-    class JsonKeys(Func):
-        function = "jsonb_object_keys"
-
     json_keys = Beer.objects.all().annotate(metadata_keys=JsonKeys("specifications"))
     json_keys = json_keys.values_list("metadata_keys", flat=True)
     top_keys = dict(Counter(json_keys))
