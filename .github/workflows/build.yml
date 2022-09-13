@@ -43,10 +43,10 @@ jobs:
     - name: Install library
       run: poetry install --no-interaction
 
-    - name: Lint with flake8
+    - name: Lint with
       run: |
         source .venv/bin/activate
         black .
         isort .
-        pflake8 . --count
+        flake8 . --count
         PYTHONPATH="$PYTHONPATH:$PWD" mypy .
