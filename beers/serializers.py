@@ -1,7 +1,8 @@
-from beers.models.bars import Bar, BarBranch
-from beers.models.beers import Beer
-
 from rest_framework import serializers
+
+from beers.models.bars import Bar
+from beers.models.bars import BarBranch
+from beers.models.beers import Beer
 
 
 class BeerSerializer(serializers.HyperlinkedModelSerializer):

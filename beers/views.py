@@ -1,17 +1,19 @@
 from collections import Counter
 
-from beers.decorators import staff_required
-from beers.logics import sync_to_db
-from beers.models.bars import Bar, BarBranch
-from beers.models.beers import Beer
-from beers.serializers import BarBranchSerializer, BarSerializer, BeerSerializer
-
 from django.db.models import Func
 from django.http import HttpResponse
-
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
+from beers.decorators import staff_required
+from beers.logics import sync_to_db
+from beers.models.bars import Bar
+from beers.models.bars import BarBranch
+from beers.models.beers import Beer
+from beers.serializers import BarBranchSerializer
+from beers.serializers import BarSerializer
+from beers.serializers import BeerSerializer
 
 
 @staff_required
@@ -69,16 +71,16 @@ def top_spec_beers_v2(request):
 class BeersViewSet(viewsets.ModelViewSet):
     queryset = Beer.objects.all().order_by("name")
     serializer_class = BeerSerializer
-    http_method_names = ("get",)
+    http_method_names = ["get"]
 
 
 class BarsViewSet(viewsets.ModelViewSet):
     queryset = Bar.objects.all().order_by("name")
     serializer_class = BarSerializer
-    http_method_names = ("get",)
+    http_method_names = ["get"]
 
 
 class BarBranchesViewSet(viewsets.ModelViewSet):
     queryset = BarBranch.objects.all().order_by("bar__name")
     serializer_class = BarBranchSerializer
-    http_method_names = ("get",)
+    http_method_names = ["get"]

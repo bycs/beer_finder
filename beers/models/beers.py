@@ -1,7 +1,7 @@
+from django.db import models
+
 from beers.managers.beers import BeerManager
 from beers.models.bars import Bar
-
-from django.db import models
 
 
 class Beer(models.Model):

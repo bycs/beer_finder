@@ -1,8 +1,9 @@
 import re
 
-from beers.parsers.base import BaseBar, clear_text
-
 from bs4 import BeautifulSoup
+
+from beers.parsers.base import BaseBar
+from beers.parsers.base import clear_text
 
 
 class WePub(BaseBar):

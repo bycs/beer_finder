@@ -1,7 +1,8 @@
-from beers.models.bars import Bar, BarBranch
-from beers.models.beers import Beer
-
 from django.contrib import admin
+
+from beers.models.bars import Bar
+from beers.models.bars import BarBranch
+from beers.models.beers import Beer
 
 
 class BarAdmin(admin.ModelAdmin):

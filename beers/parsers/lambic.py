@@ -1,8 +1,10 @@
 import re
 
-from beers.parsers.base import BaseBar, clear_text, get_html
-
 from bs4 import BeautifulSoup
+
+from beers.parsers.base import BaseBar
+from beers.parsers.base import clear_text
+from beers.parsers.base import get_html
 
 
 class Lambic(BaseBar):

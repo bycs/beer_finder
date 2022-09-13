@@ -1,8 +1,8 @@
 import re
 
-from beers.parsers.base import BaseBar
-
 from bs4 import BeautifulSoup
+
+from beers.parsers.base import BaseBar
 
 
 class WeCidreria(BaseBar):
