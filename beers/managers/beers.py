@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.db import models
 from django.db import transaction
+from django.db.models import Func
 
 from beers.models.bars import Bar
 
@@ -24,3 +25,7 @@ class BeerManager(models.Manager):
             self.filter(bar=current_bar.pk).delete()
             self.bulk_create(objs)
             current_bar.save()
+
+
+class JsonKeys(Func):
+    function = "jsonb_object_keys"
