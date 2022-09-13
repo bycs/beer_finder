@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 
 class WeCidreria(BaseBar):
-    name = "We Cidreria"
+    name = "WE Cidreria"
 
     @property
     def urls(self) -> list[str]:

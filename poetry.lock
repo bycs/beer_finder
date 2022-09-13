@@ -181,6 +181,17 @@ flake8 = "*"
 test = ["coverage", "coveralls", "mock", "pytest", "pytest-cov"]
 
 [[package]]
+name = "flake8-import-order"
+version = "0.18.1"
+description = "Flake8 and pylama plugin that checks the ordering of import statements."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+pycodestyle = "*"
+
+[[package]]
 name = "identify"
 version = "2.5.5"
 description = "File identification library for Python"
@@ -436,7 +447,7 @@ testing = ["coverage (>=6.2)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "a5629ee94cef8ef97a197611187c27515efa9d1961bed84602a35af381cb978a"
+content-hash = "36a1a85ae2476f5901ccb4f0a6a1ad563227454ea7f31f5a8810f205f74aa5c0"
 
 [metadata.files]
 asgiref = []
@@ -454,6 +465,7 @@ filelock = []
 flake8 = []
 flake8-black = []
 flake8-builtins = []
+flake8-import-order = []
 identify = []
 idna = []
 mccabe = []
