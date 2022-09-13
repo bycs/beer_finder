@@ -12,7 +12,7 @@ class WeCidreria(BaseBar):
     def urls(self) -> list[str]:
         return ["https://we-cidreria.ru/menu/beer/", "https://we-cidreria.ru/menu/ciders/"]
 
-    def parse_data(self, unparsed_data: str):
+    def parse_data(self, unparsed_data: str) -> list[dict]:
         soup = BeautifulSoup(unparsed_data, "html.parser")
         all_beers = soup.find_all("div", class_="catalog-element-item")
         beer_list = []

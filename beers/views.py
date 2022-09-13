@@ -17,7 +17,7 @@ from beers.serializers import BeerSerializer
 
 
 @staff_required
-def sync_all_beers(request):
+def sync_all_beers(request) -> HttpResponse:
     sync_to_db.sync_lambic()
     sync_to_db.sync_we_cidreria()
     sync_to_db.sync_we_pub()
@@ -25,7 +25,7 @@ def sync_all_beers(request):
 
 
 @api_view(["GET"])
-def filter_beers(request, bar_id: int | None = None, **kwargs: list[dict[str, str]]):
+def filter_beers(request, bar_id: int | None = None, **kwargs: list[dict[str, str]]) -> Response:
     if bar_id is None:
         beers = Beer.objects.all()
     else:
@@ -38,7 +38,7 @@ def filter_beers(request, bar_id: int | None = None, **kwargs: list[dict[str, st
 
 
 @api_view(["GET"])
-def top_spec_beers_v1(request):
+def top_spec_beers_v1(request) -> Response:
     queryset = Beer.objects.all().values("specifications")
     specifications = [item["specifications"] for item in queryset]
     keys = set()
@@ -46,8 +46,9 @@ def top_spec_beers_v1(request):
     key_count = {}
 
     for spec in specifications:
-        keys.update(spec.keys())
-        keys_list += list(spec.keys())
+        if spec:
+            keys.update(spec.keys())
+            keys_list += list(spec.keys())
     for key in keys:
         key_count[key] = keys_list.count(key)
 
@@ -57,7 +58,7 @@ def top_spec_beers_v1(request):
 
 
 @api_view(["GET"])
-def top_spec_beers_v2(request):
+def top_spec_beers_v2(request) -> Response:
     class JsonKeys(Func):
         function = "jsonb_object_keys"
 

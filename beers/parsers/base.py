@@ -40,15 +40,15 @@ class BaseBar:
     def urls(self) -> list[str]:
         raise NotImplementedError
 
-    def _get_data(self):
+    def _get_data(self) -> list[UnparsedData]:
         print(f"Getting {self.__class__.__name__} data from source {self.urls}...")
         return self.get_data()
 
-    def _parse_data(self, unparsed_data: UnparsedData):
+    def _parse_data(self, unparsed_data: UnparsedData) -> list[dict]:
         print(f"Parsing unparsed_data from {unparsed_data.url}...")
         return self.parse_data(unparsed_data.source)
 
-    def _save_data(self, parsed_data):
+    def _save_data(self, parsed_data: list[dict]) -> None:
         Beer.objects.sync_bar_beers_to_db(self.name, parsed_data)
         print(f"Save {len(parsed_data)} objects to database from {self.__class__.__name__}")
 
@@ -61,7 +61,7 @@ class BaseBar:
                 result.append(data)
         return result
 
-    def parse_data(self, unparsed_data: str):
+    def parse_data(self, unparsed_data: str) -> list[dict]:
         raise NotImplementedError
 
     def run(self):

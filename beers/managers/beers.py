@@ -7,7 +7,7 @@ from beers.models.bars import Bar
 
 
 class BeerManager(models.Manager):
-    def sync_bar_beers_to_db(self, bar_name: int, beers: list) -> None:
+    def sync_bar_beers_to_db(self, bar_name: str, beers: list[dict]) -> None:
         current_bar = Bar.objects.get(name=bar_name)
         objs = [
             self.model(

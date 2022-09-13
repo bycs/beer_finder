@@ -13,7 +13,7 @@ class WePub(BaseBar):
     def urls(self) -> list[str]:
         return ["https://we-pub.ru/beer/"]
 
-    def parse_data(self, unparsed_data: str):
+    def parse_data(self, unparsed_data: str) -> list[dict]:
         soup = BeautifulSoup(unparsed_data, "html.parser")
         soup = soup.find("div", class_="catalog-element-list")
         all_category = soup.find_all("div", class_="catalog-element-section-name")
