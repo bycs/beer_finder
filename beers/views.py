@@ -2,7 +2,6 @@ from collections import Counter
 
 from django.http import HttpResponse
 from rest_framework import viewsets
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from beers.decorators import staff_required
@@ -24,46 +23,46 @@ def sync_all_beers(request) -> HttpResponse:
     return HttpResponse("Все ок!")
 
 
-@api_view(["GET"])
-def filter_beers(request, bar_id: int | None = None, **kwargs: list[dict[str, str]]) -> Response:
-    if bar_id is None:
-        beers = Beer.objects.all()
-    else:
-        beers = Beer.objects.filter(bar_id=bar_id)
-    if kwargs:
-        for key, value in kwargs.items():
-            beers = beers.filter(specifications__contains={key: value})
-    serializer = BeerSerializer(beers, many=True)
-    return Response(serializer.data)
+class FilterBeersViewSet(viewsets.ViewSet):
+    def list(self, request, bar_id: int | None = None, **kwargs: list[dict[str, str]]) -> Response:
+        if bar_id is None:
+            beers = Beer.objects.all()
+        else:
+            beers = Beer.objects.filter(bar_id=bar_id)
+        if kwargs:
+            for key, value in kwargs.items():
+                beers = beers.filter(specifications__contains={key: value})
+        serializer = BeerSerializer(beers, many=True)
+        return Response(serializer.data)
 
 
-@api_view(["GET"])
-def top_spec_beers_v1(request) -> Response:
-    queryset = Beer.objects.all().values("specifications")
-    specifications = [item["specifications"] for item in queryset]
-    keys = set()
-    keys_list = []
-    key_count = {}
+class TopSpecV1ViewSet(viewsets.ViewSet):
+    def list(self, request) -> Response:
+        queryset = Beer.objects.all().values("specifications")
+        specifications = [item["specifications"] for item in queryset]
+        keys = set()
+        keys_list = []
+        key_count = {}
 
-    for spec in specifications:
-        if spec:
-            keys.update(spec.keys())
-            keys_list += list(spec.keys())
-    for key in keys:
-        key_count[key] = keys_list.count(key)
+        for spec in specifications:
+            if spec:
+                keys.update(spec.keys())
+                keys_list += list(spec.keys())
+        for key in keys:
+            key_count[key] = keys_list.count(key)
 
-    key_count = dict(sorted(key_count.items(), key=lambda item: item[1], reverse=True))
-    top_keys = list(key_count.keys())[:7]
-    return Response(data=top_keys)
+        key_count = dict(sorted(key_count.items(), key=lambda item: item[1], reverse=True))
+        top_keys = list(key_count.keys())[:7]
+        return Response(data=top_keys)
 
 
-@api_view(["GET"])
-def top_spec_beers_v2(request) -> Response:
-    json_keys = Beer.objects.all().annotate(metadata_keys=JsonKeys("specifications"))
-    json_keys = json_keys.values_list("metadata_keys", flat=True)
-    top_keys = dict(Counter(json_keys))
-    sorted_keys = dict(sorted(top_keys.items(), key=lambda x: x[1], reverse=True))
-    return Response(data=sorted_keys)
+class TopSpecV2ViewSet(viewsets.ViewSet):
+    def list(self, request) -> Response:
+        json_keys = Beer.objects.all().annotate(metadata_keys=JsonKeys("specifications"))
+        json_keys = json_keys.values_list("metadata_keys", flat=True)
+        top_keys = dict(Counter(json_keys))
+        sorted_keys = dict(sorted(top_keys.items(), key=lambda x: x[1], reverse=True)[:7])
+        return Response(data=sorted_keys.keys())
 
 
 class BeersViewSet(viewsets.ModelViewSet):
