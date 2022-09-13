@@ -1,12 +1,13 @@
 from datetime import datetime
 
-from beers.models.bars import Bar
+from django.db import models
+from django.db import transaction
 
-from django.db import models, transaction
+from beers.models.bars import Bar
 
 
 class BeerManager(models.Manager):
-    def sync_bar_beers_to_db(self, bar_name: int, beers: list):
+    def sync_bar_beers_to_db(self, bar_name: int, beers: list) -> None:
         current_bar = Bar.objects.get(name=bar_name)
         objs = [
             self.model(

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-
-from beers.models.beers import Beer
+from typing import Literal
 
 import requests
+
+from beers.models.beers import Beer
 
 
 def clear_text(text: str) -> str:
@@ -16,11 +17,11 @@ def clear_text(text: str) -> str:
     return text
 
 
-def get_html(url) -> str | bool:
+def get_html(url: str) -> str | Literal[False]:
     try:
         result = requests.get(url)
         result.raise_for_status()
-        return result.text
+        return str(result.text)
     except (requests.RequestException, ValueError):
         print("Error")
         return False
@@ -54,8 +55,10 @@ class BaseBar:
     def get_data(self) -> list[UnparsedData]:
         result = []
         for url in self.urls:
-            data = UnparsedData(url=url, source=get_html(url))
-            result.append(data)
+            source = get_html(url)
+            if source:
+                data = UnparsedData(url=url, source=source)
+                result.append(data)
         return result
 
     def parse_data(self, unparsed_data: str):

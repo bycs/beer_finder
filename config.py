@@ -2,7 +2,10 @@ import os
 
 from dotenv import load_dotenv
 
-load_dotenv()
+
+dotenv_path = os.path.join(os.path.dirname(__file__), ".env")
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
 
 DEBUG = int(os.getenv("DEBUG", 0))
 DJANGO_SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")

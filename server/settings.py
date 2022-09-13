@@ -10,19 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
+
 from pathlib import Path
 
-from config import (
-    DB_HOST,
-    DB_NAME,
-    DB_PASS,
-    DB_PORT,
-    DB_USER,
-    DEBUG,
-    DJANGO_ALLOWED_HOSTS,
-    DJANGO_CSRF_TRUSTED_ORIGINS,
-    DJANGO_SECRET_KEY,
-)
+from config import DB_HOST
+from config import DB_NAME
+from config import DB_PASS
+from config import DB_PORT
+from config import DB_USER
+from config import DEBUG
+from config import DJANGO_ALLOWED_HOSTS
+from config import DJANGO_CSRF_TRUSTED_ORIGINS
+from config import DJANGO_SECRET_KEY
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
