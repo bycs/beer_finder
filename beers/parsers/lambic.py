@@ -24,7 +24,7 @@ class Lambic(BaseBar):
             urls.append(f"{base_url}{url}")
         return urls
 
-    def parse_data(self, unparsed_data: str):
+    def parse_data(self, unparsed_data: str) -> list[dict]:
         soup = BeautifulSoup(unparsed_data, "html.parser")
         all_beer = soup.find("div", class_="beer-list").find_all("div", class_="beer")
         beer_list = []
