@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "rest_framework",
     # Local
     "beers.apps.BeersConfig",
+    "bot.apps.BotConfig",
 ]
 
 MIDDLEWARE = [
