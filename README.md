@@ -14,7 +14,7 @@
 
 ## Devolopment
 
- Для того, чтобы помочь с разработкой потребуется:
+Для того, чтобы помочь с разработкой потребуется:
 
 * [Python](https://www.python.org)
 * [Poetry](https://python-poetry.org)
