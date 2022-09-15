@@ -6,7 +6,7 @@ from aiogram import executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from bot.logics.base import Basic
-from bot.logics.filter_beers import FilterBeers
+from bot.logics.beers import FilterBeers
 from bot.logics.on_startup import on_startup
 from config import BOT_TOKEN
 
