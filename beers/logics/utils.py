@@ -1,4 +1,5 @@
 from collections import Counter
+from operator import itemgetter
 
 from django.db.models import QuerySet
 
@@ -34,21 +35,28 @@ def get_top_values(bar: str | None = None, key: str | None = None) -> list:
     if key:
         values = beers.values_list(f"specifications__{key}", flat=True)
     else:
-        values = beers.values_list(flat=True)
-    # TODO: view type annotations
-    values = dict(Counter(values))  # type: ignore
-    values = dict(sorted(values.items(), key=lambda x: x[1], reverse=True)[:7])  # type: ignore
-    result = values.keys()  # type: ignore
+        values = beers.values_list("specifications__", flat=True)
+
+    values_dict = dict(Counter(values))
+    sorted_tuple = sorted(values_dict.items(), key=itemgetter(1), reverse=True)
+    values_sorted = dict(sorted_tuple[:7])
+    result = values_sorted.keys()
     return [result for result in result if result]
 
 
-def filter_beers(bar: str | None = None, *args: dict[str, str]) -> QuerySet:
+def filter_beers(bar: str | None = None, *args: dict[str, str]) -> list[Beer]:
+    result: list[Beer] = []
     if bar is None:
         beers = Beer.objects.all()
     else:
         beers = Beer.objects.filter(bar__name=bar)
+
     if args:
         for arg in args:
-            beers = beers.filter(specifications__contains=arg)
+            arg_key = list(arg.keys())[0]
+            arg_value = list(arg.values())[0]
+            if arg_key and arg_value:
+                beers = beers.filter(specifications__contains=arg)
 
-    return beers
+    result += beers
+    return result
