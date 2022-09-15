@@ -25,7 +25,7 @@ class FilterBeers(BaseLogic):
         await FilterForm.bar.set()
 
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-        bars = get_bars()
+        bars = get_bars().values_list("name", flat=True)
         markup.add(*bars)
         markup.add("Любой бар")
 
@@ -80,7 +80,7 @@ class FilterBeers(BaseLogic):
             await message.reply(text, reply_markup=markup)
             bar = data["bar"]
             filter_dict = {data["search_terms"]: data["request"]}
-            beers = filter_beers(bar, filter_dict)
+            beers = list(filter_beers(bar, filter_dict))
             shuffle(beers, random)
             if len(beers) > 5:
                 beers = beers[:5]
