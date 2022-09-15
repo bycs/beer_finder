@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "beer_finder"
-version = "0.2.1"
-description = ""
+version = "0.3.0"
+description = "The app will help you find the best beer for you and your friends."
 authors = ["Stas Cartoon <bycs@mail.ru>"]
 
 [tool.poetry.dependencies]
