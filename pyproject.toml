@@ -1,26 +1,31 @@
 [tool.poetry]
 name = "beer_finder"
-version = "0.1.0"
-description = ""
+version = "0.3.1"
+description = "The app will help you find the best beer for you and your friends."
 authors = ["Stas Cartoon <bycs@mail.ru>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-Django = "4.0.5"
+Django = "4.1.1"
 djangorestframework = "3.13.1"
-pydantic = "1.9.1"
+gunicorn = "20.1.0"
 psycopg2-binary = "2.9.3"
 beautifulsoup4 = "4.11.1"
-requests = "2.28.0"
+python-dotenv = "0.21.0"
+requests = "2.28.1"
+aiogram = "2.22.1"
 
 [tool.poetry.dev-dependencies]
-black = "22.3.0"
-flake8 = "4.0.1"
-pyproject-flake8 = "0.0.1-alpha.4"
+black = "22.8.0"
+isort = "5.10.1"
+flake8 = "5.0.4"
 flake8-black = "0.3.3"
 flake8-builtins = "1.5.3"
-flake8-import-order = "0.18.1"
-pre-commit = "2.19.0"
+flake8-django = "1.1.5"
+mypy = "0.971"
+django-stubs = "1.12.0"
+djangorestframework-stubs = "1.7.0"
+pre-commit = "2.20.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -28,6 +33,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 100
+target-version = ['py310']
 exclude = """
     ('
     |.idea/
@@ -36,19 +42,10 @@ exclude = """
     ')
 """
 
-# call using pflake8
-[tool.flake8]
-max-line-length = 100
-max-complexity = 4
-ignore = "A003, W503"
-exclude = """
-    .idea/
-    .venv/
-    .vscode/
-    */migrations/
-"""
-
-[virtualenvs]
-create = true
-in-project = true
-path = ".venv"
+[tool.isort]
+py_version = 310
+profile = "black"
+force_single_line = true
+combine_as_imports = true
+lines_between_types = 1
+lines_after_imports = 2
