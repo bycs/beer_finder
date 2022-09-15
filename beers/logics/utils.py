@@ -8,25 +8,26 @@ from beers.models.bars import Bar
 from beers.models.beers import Beer
 
 
-def get_bars() -> list:
-    bars: QuerySet = Bar.objects.all().values_list("name", flat=True)
-    return list(bars)
+def get_bars() -> QuerySet[Bar]:
+    bars = Bar.objects.all()
+    return bars
 
 
-def get_top_keys(bar: str | None = None) -> list:
+def get_top_keys(bar: str | None = None) -> list[str]:
     if bar:
         beers = Beer.objects.filter(bar__name=bar)
     else:
         beers = Beer.objects.all()
     json_keys = beers.annotate(metadata_keys=JsonKeys("specifications"))
-    json_keys = json_keys.values_list("metadata_keys", flat=True)
-    top_keys = dict(Counter(json_keys))
-    sorted_keys = dict(sorted(top_keys.items(), key=lambda x: x[1], reverse=True)[:7])
-    result = sorted_keys.keys()
-    return [result for result in result if result]
+    keys = json_keys.values_list("metadata_keys", flat=True)
+    keys_dict = dict(Counter(keys))
+    sorted_tuple = sorted(keys_dict.items(), key=itemgetter(1), reverse=True)
+    keys_sorted = dict(sorted_tuple[:7])
+    result = list(keys_sorted.keys())
+    return [x for x in result if x is not None]
 
 
-def get_top_values(bar: str | None = None, key: str | None = None) -> list:
+def get_top_values(bar: str | None = None, key: str | None = None) -> list[str]:
     if bar:
         beers = Beer.objects.filter(bar__name=bar)
     else:
@@ -40,12 +41,11 @@ def get_top_values(bar: str | None = None, key: str | None = None) -> list:
     values_dict = dict(Counter(values))
     sorted_tuple = sorted(values_dict.items(), key=itemgetter(1), reverse=True)
     values_sorted = dict(sorted_tuple[:7])
-    result = values_sorted.keys()
-    return [result for result in result if result]
+    result = list(values_sorted.keys())
+    return [x for x in result if x is not None]
 
 
-def filter_beers(bar: str | None = None, *args: dict[str, str]) -> list[Beer]:
-    result: list[Beer] = []
+def filter_beers(bar: str | None = None, *args: dict[str, str]) -> QuerySet[Beer]:
     if bar is None:
         beers = Beer.objects.all()
     else:
@@ -58,5 +58,4 @@ def filter_beers(bar: str | None = None, *args: dict[str, str]) -> list[Beer]:
             if arg_key and arg_value:
                 beers = beers.filter(specifications__contains=arg)
 
-    result += beers
-    return result
+    return beers

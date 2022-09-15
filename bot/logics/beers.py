@@ -10,12 +10,10 @@ from beers.logics.utils import get_bars
 from beers.logics.utils import get_top_keys
 from beers.logics.utils import get_top_values
 from bot.forms import FilterForm
+from bot.logics.base import BaseLogic
 
 
-class FilterBeers:
-    def __init__(self, dp: Dispatcher) -> None:
-        self._register(dp)
-
+class FilterBeers(BaseLogic):
     def _register(self, dp: Dispatcher) -> None:
         dp.register_message_handler(self.filter_start, commands="filter")
         dp.register_message_handler(self.filter_step2, state=FilterForm.bar)
@@ -27,7 +25,7 @@ class FilterBeers:
         await FilterForm.bar.set()
 
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-        bars = get_bars()
+        bars = get_bars().values_list("name", flat=True)
         markup.add(*bars)
         markup.add("Любой бар")
 
@@ -82,7 +80,7 @@ class FilterBeers:
             await message.reply(text, reply_markup=markup)
             bar = data["bar"]
             filter_dict = {data["search_terms"]: data["request"]}
-            beers = filter_beers(bar, filter_dict)
+            beers = list(filter_beers(bar, filter_dict))
             shuffle(beers, random)
             if len(beers) > 5:
                 beers = beers[:5]
