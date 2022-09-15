@@ -7,6 +7,11 @@ class BaseLogic:
         self._register(dp)
 
     def _register(self, dp: Dispatcher) -> None:
+        raise NotImplementedError
+
+
+class Basic(BaseLogic):
+    def _register(self, dp: Dispatcher) -> None:
         dp.register_message_handler(self.command_start, commands="start")
         dp.register_message_handler(self.command_help, commands="help")
 

@@ -5,7 +5,7 @@ from aiogram import Dispatcher
 from aiogram import executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
-from bot.logics.base import BaseLogic
+from bot.logics.base import Basic
 from bot.logics.filter_beers import FilterBeers
 from bot.logics.on_startup import on_startup
 from config import BOT_TOKEN
@@ -22,6 +22,6 @@ dp = Dispatcher(bot, storage=storage)
 
 def run_bot() -> None:
     print("### The bot is being launched")
-    BaseLogic(dp)
+    Basic(dp)
     FilterBeers(dp)
     executor.start_polling(dp, on_startup=on_startup, skip_updates=True)

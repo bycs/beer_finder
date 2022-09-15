@@ -10,12 +10,10 @@ from beers.logics.utils import get_bars
 from beers.logics.utils import get_top_keys
 from beers.logics.utils import get_top_values
 from bot.forms import FilterForm
+from bot.logics.base import BaseLogic
 
 
-class FilterBeers:
-    def __init__(self, dp: Dispatcher) -> None:
-        self._register(dp)
-
+class FilterBeers(BaseLogic):
     def _register(self, dp: Dispatcher) -> None:
         dp.register_message_handler(self.filter_start, commands="filter")
         dp.register_message_handler(self.filter_step2, state=FilterForm.bar)
