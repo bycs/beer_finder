@@ -1,3 +1,6 @@
+from random import random
+from random import shuffle
+
 from aiogram import Dispatcher
 from aiogram import types
 from aiogram.dispatcher import FSMContext
@@ -67,17 +70,33 @@ class FilterBeers:
     @staticmethod
     async def filter_finish(message: types.Message, state: FSMContext) -> None:
         async with state.proxy() as data:
-            data["request"] = message.text
+            if message.text == "Показать все":
+                data["request"] = None
+            else:
+                data["request"] = message.text
             markup = types.ReplyKeyboardRemove()
-            text = f"Бар: {data['bar']}\nКритерии поиска: {data['search_terms']}: {data['request']}"
+            bar_text = f"Бар: {data['bar']}\n"
+            search_text = f"Критерии поиска: {data['search_terms']}: {data['request']}"
+            answer_text = "\n\nЯ сформировал для тебя 5 случайных пива, которые тебе понравятся:"
+            text = bar_text + search_text + answer_text
             await message.reply(text, reply_markup=markup)
             bar = data["bar"]
             filter_dict = {data["search_terms"]: data["request"]}
             beers = filter_beers(bar, filter_dict)
+            shuffle(beers, random)
+            if len(beers) > 5:
+                beers = beers[:5]
             for beer in beers:
+                name_text = f"🍻 {beer.name}\n"
+                bar_text = f"Бар: #{beer.bar.name.replace(' ', '')}\n"
+                description_text = f"\nОписание: {beer.description}\n"
                 if beer.price:
-                    price = f"{beer.price / 100} руб/л"
-                text = f"{beer.name} - {price}\n{beer.description}"
+                    price_text = f"Цена ~{int(beer.price / 100)} ₽/л\n"
+                if beer.specifications:
+                    specifications_text = ""
+                    for key, value in beer.specifications.items():
+                        specifications_text += f"\n{key}: {value}"
+                text = name_text + price_text + bar_text + description_text + specifications_text
                 await message.answer(text)
 
         await state.finish()

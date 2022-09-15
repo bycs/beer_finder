@@ -9,6 +9,11 @@ if os.path.exists(dotenv_path):
 
 DEBUG = int(os.getenv("DEBUG", 0))
 
+if DEBUG:
+    dotenv_path = os.path.join(os.path.dirname(__file__), "dev.env")
+    if os.path.exists(dotenv_path):
+        load_dotenv(dotenv_path)
+
 DJANGO_SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DJANGO_ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(" ")
 DJANGO_CSRF_TRUSTED_ORIGINS = os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "localhost").split(" ")
