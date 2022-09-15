@@ -5,12 +5,21 @@ from django.db.models import QuerySet
 
 from beers.managers.beers import JsonKeys
 from beers.models.bars import Bar
+from beers.models.bars import BarBranch
 from beers.models.beers import Beer
 
 
 def get_bars() -> QuerySet[Bar]:
     bars = Bar.objects.all()
     return bars
+
+
+def get_bars_branches(bar: str | None = None) -> QuerySet[BarBranch]:
+    if bar:
+        bars_branch = BarBranch.objects.filter(bar__name=bar)
+    else:
+        bars_branch = BarBranch.objects.all()
+    return bars_branch
 
 
 def get_top_keys(bar: str | None = None) -> list[str]:

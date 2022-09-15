@@ -4,9 +4,11 @@ from aiogram import types
 
 async def set_default_commands(dp: Dispatcher) -> None:
     commands = [
-        types.BotCommand("start", "Запустить бота"),
-        types.BotCommand("help", "Помощь"),
+        types.BotCommand("start", "Запустить / обновить бота"),
         types.BotCommand("filter", "Поиск пива"),
+        types.BotCommand("bars", "Список баров"),
+        types.BotCommand("addresses", "Адреса баров"),
+        types.BotCommand("help", "Помощь"),
     ]
     print("### The default COMMANDS setup has been successfully completed")
     await dp.bot.set_my_commands(commands)
