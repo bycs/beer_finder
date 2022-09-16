@@ -4,6 +4,7 @@ from aiogram.dispatcher.filters.state import StatesGroup
 
 class AddressForm(StatesGroup):
     bar = State()
+    metro = State()
 
 
 class FilterForm(StatesGroup):
