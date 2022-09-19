@@ -8,6 +8,7 @@ async def set_default_commands(dp: Dispatcher) -> None:
         types.BotCommand("filter", "Поиск пива"),
         types.BotCommand("bars", "Список баров"),
         types.BotCommand("addresses", "Адреса баров"),
+        types.BotCommand("geo_bar", "Ближайшие бары"),
         types.BotCommand("help", "Помощь"),
     ]
     print("### The default COMMANDS setup has been successfully completed")

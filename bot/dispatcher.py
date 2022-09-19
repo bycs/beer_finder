@@ -5,7 +5,8 @@ from aiogram import Dispatcher
 from aiogram import executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
-from bot.logics.bars import BarBranchHandler
+from bot.logics.bars import BarBranchGeo
+from bot.logics.bars import BarBranchList
 from bot.logics.bars import BarHandler
 from bot.logics.base import Basic
 from bot.logics.beers import FilterBeers
@@ -24,7 +25,8 @@ dp = Dispatcher(bot, storage=storage)
 
 def run_bot() -> None:
     print("### The bot is being launched")
-    BarBranchHandler(dp)
+    BarBranchList(dp)
+    BarBranchGeo(dp)
     BarHandler(dp)
     Basic(dp)
     FilterBeers(dp)
