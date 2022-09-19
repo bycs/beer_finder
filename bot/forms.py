@@ -11,3 +11,8 @@ class FilterForm(StatesGroup):
     bar = State()
     search_terms = State()
     request = State()
+
+
+class GeoBarForm(StatesGroup):
+    bar = State()
+    search_type = State()

@@ -6,8 +6,12 @@ services:
     build: .
     env_file:
       - .env
+    volumes:
+      - .:/source/
+      - static:/source/staticfiles/
+      - media:/source/mediafiles/
     working_dir: /source/
-    command:  bash -c "python manage.py migrate && python manage.py collectstatic && gunicorn server.wsgi --bind 0.0.0.0:8000"
+    command:  bash -c "python manage.py migrate && gunicorn server.wsgi --bind 0.0.0.0:8000"
     ports:
       - "8000:8000"
     depends_on:
@@ -36,3 +40,5 @@ services:
 
 volumes:
   postgres_data:
+  static:
+  media:

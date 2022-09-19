@@ -27,3 +27,5 @@ DB_PASS = os.getenv("DB_PASS", "pass")
 DB_NAME = os.getenv("DB_NAME", "db")
 
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+GRAPHHOPPER_KEY = os.getenv("GRAPHHOPPER_KEY")
+YANDEXMAP_KEY = os.getenv("YANDEXMAP_KEY")
