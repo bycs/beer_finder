@@ -89,7 +89,7 @@ class FilterBeers(BaseLogic):
                 bar_text = f"Бар: #{beer.bar.name.replace(' ', '')}\n"
                 description_text = f"\nОписание: {beer.description}\n"
                 if beer.price:
-                    price_text = f"Цена ~{int(beer.price / 100)} ₽/л\n"
+                    price_text = f"Цена ~{beer.price_rub} ₽/л\n"
                 if beer.specifications:
                     specifications_text = ""
                     for key, value in beer.specifications.items():

@@ -87,7 +87,7 @@ class BarBranchList(BaseLogic):
                     maps_link = f"{ya}?ll={bar.point}&z=16&text={bar.bar.name.replace(' ', '%20')}"
                     address = md.hlink(bar.address, maps_link)
                     address_text = f"📍 {address}"
-                    text += f"🍻 {bar.bar_branch_name}\n{address_text}\n\n{bar.bar.website}\n\n\n"
+                    text += f"🍻 {bar.barbranch_name}\n{address_text}\n\n{bar.bar.website}\n\n\n"
                 response_text = "Сейчас мы знаем о следующих адресах:\n\n" + text
 
             await message.reply(
@@ -154,8 +154,7 @@ class BarBranchGeo(BaseLogic):
             distances = {}
             for bar in bars_branch:
                 point_bar = bar.point.split(",")
-
-                location_bar = Point(*point_bar)
+                location_bar = Point(float(point_bar[0]), float(point_bar[1]))
                 distance = get_distance(location_user, location_bar)
                 distances[bar] = round(distance / 1000, 1)
 
@@ -172,7 +171,7 @@ class BarBranchGeo(BaseLogic):
                     maps_link = f"{ya}?ll={bar.point}&z=16&text={bar.bar.name.replace(' ', '%20')}"
                     address = md.hlink(bar.address, maps_link)
                     address_text = f"📍 {address}\n\n"
-                    name_text = f"🍻 {bar.bar_branch_name} ~{distances_sorted[bar]} км\n"
+                    name_text = f"🍻 {bar.barbranch_name} ~{distances_sorted[bar]} км\n"
                     website_text = f"{bar.bar.website}\n\n\n"
                     text += name_text + address_text + website_text
                 response_text = "Самые близкие бары:\n\n" + text
