@@ -5,7 +5,6 @@ name: linters
 
 on:
   push:
-    branches: [ master, dev ]
   pull_request:
     branches: [ master, dev ]
 
@@ -43,22 +42,5 @@ jobs:
     - name: Install library
       run: poetry install --no-interaction
 
-    - name: venv activate
-      run: source .venv/bin/activate
-
-    - name: black
-      run: black .
-
-    - name: isort
-      run: isort .
-
-    - name: flake8
-      run: flake8 . --count
-
-    - name: mypy
-      run: PYTHONPATH="$PYTHONPATH:$PWD" mypy .
-
-    - name: dotenv-linter
-      uses: wemake-services/dotenv-linter
-      with:
-        options: '.env .env_template dev.env_template'
+    - name: pytest
+      run: poetry run pytest

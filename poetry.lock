@@ -165,6 +165,17 @@ python-versions = ">=3.7"
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
+name = "click-default-group"
+version = "1.2.2"
+description = "Extends click.Group to invoke a command without explicit subcommand name"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+click = "*"
+
+[[package]]
 name = "colorama"
 version = "0.4.5"
 description = "Cross-platform colored terminal text."
@@ -286,6 +297,21 @@ typing-extensions = ">=3.10.0"
 
 [package.extras]
 compatible-mypy = ["mypy (>=0.950,<0.970)"]
+
+[[package]]
+name = "dotenv-linter"
+version = "0.4.0"
+description = "Linting dotenv files like a charm!"
+category = "dev"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.dependencies]
+attrs = "*"
+click = ">=6,<9"
+click_default_group = ">=1.2,<2.0"
+ply = ">=3.11,<4.0"
+typing_extensions = ">=3.6,<5.0"
 
 [[package]]
 name = "drf-spectacular"
@@ -587,6 +613,14 @@ python-versions = ">=3.6"
 [package.extras]
 testing = ["pytest-benchmark", "pytest"]
 dev = ["tox", "pre-commit"]
+
+[[package]]
+name = "ply"
+version = "3.11"
+description = "Python Lex & Yacc"
+category = "dev"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "pre-commit"
@@ -948,7 +982,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "ed87fcf93902d10674d1bee35660981e8ad84acae43884ae99cd94ce5cb3ae90"
+content-hash = "96178138eeccaebee0dddf00c88ca643343e94f57826347e79f9ceb4e14e9c6e"
 
 [metadata.files]
 aiogram = []
@@ -964,6 +998,7 @@ certifi = []
 cfgv = []
 charset-normalizer = []
 click = []
+click-default-group = []
 colorama = []
 coreapi = []
 coreschema = []
@@ -973,6 +1008,7 @@ django-stubs = []
 django-stubs-ext = []
 djangorestframework = []
 djangorestframework-stubs = []
+dotenv-linter = []
 drf-spectacular = []
 filelock = []
 flake8 = []
@@ -1000,6 +1036,7 @@ packaging = []
 pathspec = []
 platformdirs = []
 pluggy = []
+ply = []
 pre-commit = []
 psycopg2-binary = []
 py = []
