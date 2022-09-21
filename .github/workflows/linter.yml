@@ -59,6 +59,4 @@ jobs:
       run: PYTHONPATH="$PYTHONPATH:$PWD" mypy .
 
     - name: dotenv-linter
-      uses: wemake-services/dotenv-linter
-      with:
-        options: '.env .env_template dev.env_template'
+      run: dotenv-linter .env_template dev.env_template'
