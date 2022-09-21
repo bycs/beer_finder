@@ -47,16 +47,16 @@ jobs:
       run: source .venv/bin/activate
 
     - name: black
-      run: black .
+      run: poetry run black .
 
     - name: isort
-      run: isort .
+      run: poetry run isort .
 
     - name: flake8
-      run: flake8 . --count
+      run: poetry run flake8 . --count
 
     - name: mypy
-      run: PYTHONPATH="$PYTHONPATH:$PWD" mypy .
+      run: poetry run PYTHONPATH="$PYTHONPATH:$PWD" mypy .
 
     - name: dotenv-linter
-      run: dotenv-linter .env_template dev.env_template'
+      run: poetry run dotenv-linter .env_template dev.env_template'
