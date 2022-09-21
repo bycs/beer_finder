@@ -56,7 +56,9 @@ jobs:
       run: poetry run flake8 . --count
 
     - name: mypy
-      run: poetry run PYTHONPATH="$PYTHONPATH:$PWD" mypy .
+      run: |
+        source .venv/bin/activate
+        PYTHONPATH="$PYTHONPATH:$PWD" mypy .
 
     - name: dotenv-linter
       run: poetry run dotenv-linter .env_template dev.env_template'
