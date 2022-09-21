@@ -6,55 +6,64 @@ from beers.models.bars import BarBranch
 
 class BarBranchModelTest(TestCase):
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls) -> None:
         bar = Bar.objects.create(name="Bar #1", website="https://bar1.com")
-        BarBranch.objects.create(
+        barbranch = BarBranch.objects.create(
             bar=bar,
             address="Россия, Москва",
             metro="Октябрьская",
         )
 
-    def test_model_barbranch_bar_label(self):
+        cls.barbranch = barbranch
+
+    def test_model_bar_it_has_fields(self) -> None:
+        self.assertIsInstance(self.barbranch.bar, Bar)
+        self.assertIsInstance(self.barbranch.address, str)
+        self.assertIsInstance(self.barbranch.metro, str)
+        self.assertIsInstance(self.barbranch.latitude, float | None)
+        self.assertIsInstance(self.barbranch.longitude, float | None)
+
+    def test_model_barbranch_bar_label(self) -> None:
         barbranch = BarBranch.objects.get(pk=1)
         field_label = barbranch._meta.get_field("bar").verbose_name
-        self.assertEquals(field_label, "Bar")
+        self.assertEqual(field_label, "Bar")
 
-    def test_model_barbranch_address_label(self):
+    def test_model_barbranch_address_label(self) -> None:
         barbranch = BarBranch.objects.get(pk=1)
         field_label = barbranch._meta.get_field("address").verbose_name
-        self.assertEquals(field_label, "Address")
+        self.assertEqual(field_label, "Address")
 
-    def test_model_barbranch_metro_label(self):
+    def test_model_barbranch_metro_label(self) -> None:
         barbranch = BarBranch.objects.get(pk=1)
         field_label = barbranch._meta.get_field("metro").verbose_name
-        self.assertEquals(field_label, "Metro")
+        self.assertEqual(field_label, "Metro")
 
-    def test_model_barbranch_latitude_label(self):
+    def test_model_barbranch_latitude_label(self) -> None:
         barbranch = BarBranch.objects.get(pk=1)
         field_label = barbranch._meta.get_field("latitude").verbose_name
-        self.assertEquals(field_label, "Latitude")
+        self.assertEqual(field_label, "Latitude")
 
-    def test_model_barbranch_longitude_label(self):
+    def test_model_barbranch_longitude_label(self) -> None:
         barbranch = BarBranch.objects.get(pk=1)
         field_label = barbranch._meta.get_field("longitude").verbose_name
-        self.assertEquals(field_label, "Longitude")
+        self.assertEqual(field_label, "Longitude")
 
-    def test_model_barbranch_address_max_length(self):
+    def test_model_barbranch_address_max_length(self) -> None:
         barbranch = BarBranch.objects.get(pk=1)
         max_length = barbranch._meta.get_field("address").max_length
-        self.assertEquals(max_length, 255)
+        self.assertEqual(max_length, 255)
 
-    def test_model_barbranch_metro_max_length(self):
+    def test_model_barbranch_metro_max_length(self) -> None:
         barbranch = BarBranch.objects.get(pk=1)
         max_length = barbranch._meta.get_field("metro").max_length
-        self.assertEquals(max_length, 255)
+        self.assertEqual(max_length, 255)
 
-    def test_model_barbranch_object_name(self):
+    def test_model_barbranch_object_name(self) -> None:
         barbranch = BarBranch.objects.get(pk=1)
         expected_object_name = "%s - %s" % (barbranch.bar.name, barbranch.metro)
-        self.assertEquals(expected_object_name, str(barbranch))
+        self.assertEqual(expected_object_name, str(barbranch))
 
-    def test_model_barbranch_object_repr(self):
+    def test_model_barbranch_object_repr(self) -> None:
         barbranch = BarBranch.objects.get(pk=1)
         expected_object_repr = "<BarBranch: %s - %s>" % (barbranch.bar.name, barbranch.metro)
-        self.assertEquals(expected_object_repr, repr(barbranch))
+        self.assertEqual(expected_object_repr, repr(barbranch))
