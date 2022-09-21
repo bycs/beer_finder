@@ -17,6 +17,9 @@ jobs:
       DB_USER: github_actions
       DB_PASS: github_actions
       DB_NAME: github_actions
+      DJANGO_SECRET_KEY: django_secret_key
+      DJANGO_ALLOWED_HOSTS: localhost
+      DJANGO_CSRF_TRUSTED_ORIGINS: http://localhost
 
     services:
       postgres:
