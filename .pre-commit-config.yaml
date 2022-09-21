@@ -33,7 +33,13 @@ repos:
         entry: mypy
         pass_filenames: false
         args: [.]
-        additional_dependencies: ["django-stubs", "djangorestframework-stubs", "python-dotenv", "djangorestframework", "psycopg2-binary"]
+        additional_dependencies: ["django-stubs", "djangorestframework-stubs", "python-dotenv", "djangorestframework", "psycopg2-binary", 'drf_spectacular']
+
+-   repo: https://github.com/wemake-services/dotenv-linter
+    rev: 0.2.0
+    hooks:
+    -   id: dotenv-linter
+        args: [.env .env_template]
 
 default_language_version:
     python: python3.10
