@@ -10,7 +10,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r"bars", views.BarsViewSet, basename="bars")
-router.register(r"bar_branches", views.BarBranchesViewSet, basename="bar_branches")
+router.register(r"barbranches", views.BarBranchesViewSet, basename="barbranches")
 router.register(r"beers", views.BeersViewSet, basename="beers")
 router.register(r"filter_beers", views.FilterBeersViewSet, basename="filter_beers")
 router.register(r"top_spec_beers_v1", views.TopSpecV1ViewSet, basename="top_spec_beers_v1")
