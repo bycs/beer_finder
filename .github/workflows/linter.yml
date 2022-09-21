@@ -61,4 +61,4 @@ jobs:
         PYTHONPATH="$PYTHONPATH:$PWD" mypy .
 
     - name: dotenv-linter
-      run: poetry run dotenv-linter .env_template dev.env_template'
+      run: poetry run dotenv-linter .env_template dev.env_template
