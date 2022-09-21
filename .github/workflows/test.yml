@@ -62,7 +62,7 @@ jobs:
       run: source .venv/bin/activate
 
     - name: Run migrations
-      run: python manage.py migrate
+      run: poetry run python manage.py migrate
 
     - name: Run PyTest
-      run: run pytest
+      run: poetry run pytest
