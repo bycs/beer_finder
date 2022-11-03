@@ -1,12 +1,18 @@
 from datetime import datetime
 
+<<<<<<< HEAD
 from beers.models.bars import Bar
+=======
+from django.db import models
+from django.db import transaction
+from django.db.models import Func
+>>>>>>> 574b7bc1525c9d3a1f77fe4fda3c0220ed8f629f
 
-from django.db import models, transaction
+from beers.models.bars import Bar
 
 
 class BeerManager(models.Manager):
-    def sync_bar_beers_to_db(self, bar_name: int, beers: list):
+    def sync_bar_beers_to_db(self, bar_name: str, beers: list[dict]) -> None:
         current_bar = Bar.objects.get(name=bar_name)
         objs = [
             self.model(
@@ -23,3 +29,10 @@ class BeerManager(models.Manager):
             self.filter(bar=current_bar.pk).delete()
             self.bulk_create(objs)
             current_bar.save()
+<<<<<<< HEAD
+=======
+
+
+class JsonKeys(Func):
+    function = "jsonb_object_keys"
+>>>>>>> 574b7bc1525c9d3a1f77fe4fda3c0220ed8f629f

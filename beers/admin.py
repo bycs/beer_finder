@@ -1,7 +1,8 @@
-from beers.models.bars import Bar, BarBranch
-from beers.models.beers import Beer
-
 from django.contrib import admin
+
+from beers.models.bars import Bar
+from beers.models.bars import BarBranch
+from beers.models.beers import Beer
 
 
 class BarAdmin(admin.ModelAdmin):
@@ -12,7 +13,11 @@ class BarAdmin(admin.ModelAdmin):
 
 class BarBranchAdmin(admin.ModelAdmin):
     model = BarBranch
+<<<<<<< HEAD
     list_display = ("bar_branch_name", "address")
+=======
+    list_display = ("barbranch_name", "address")
+>>>>>>> 574b7bc1525c9d3a1f77fe4fda3c0220ed8f629f
     list_filter = ("bar__name", "metro")
     search_fields = ("bar__name", "metro", "address")
 
