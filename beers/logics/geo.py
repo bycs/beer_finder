@@ -23,7 +23,7 @@ class Point:
     def __str__(self):
         return f"{self.latitude}, {self.longitude}"
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         point: dict = {"latitude": self.latitude, "lng": self.longitude}
         return point
 
@@ -62,7 +62,7 @@ class YandexMapGeo:
             latitude, longitude = coordinates
             point = Point(latitude, longitude)
             return point
-        except KeyError or IndexError:
+        except KeyError or IndexError:  # type: ignore
             return None
 
 
@@ -79,7 +79,7 @@ class GraphhopperGeo:
             longitude = response["hits"][0]["point"]["lng"]
             point = Point(latitude, longitude)
             return point
-        except KeyError or IndexError:
+        except KeyError or IndexError:  # type: ignore
             return None
 
     def route(self, from_p: Point, to_p: Point) -> str | None:
@@ -95,5 +95,5 @@ class GraphhopperGeo:
         try:
             distance: str = response["paths"][0]["distance"]
             return distance
-        except KeyError or IndexError:
+        except KeyError or IndexError:  # type: ignore
             return None

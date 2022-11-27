@@ -12,8 +12,8 @@ services:
       - media:/source/mediafiles/
     working_dir: /source/
     command:  bash -c "python manage.py migrate && gunicorn server.wsgi --bind 0.0.0.0:8000"
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       - postgres
 
@@ -36,7 +36,16 @@ services:
       - .env
     ports:
       - "5432:5432"
-    restart: always
+
+  nginx:
+    build: ./nginx
+    volumes:
+        - static:/source/staticfiles/
+        - media:/source/mediafiles/
+    ports:
+      - "80:80"
+    depends_on:
+      - django
 
 volumes:
   postgres_data:
