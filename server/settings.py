@@ -150,5 +150,5 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     "TITLE": "Beer Finder",
     "DESCRIPTION": "Beer Finder API",
-    "VERSION": "0.3.3",
+    "VERSION": "0.3.4",
 }
