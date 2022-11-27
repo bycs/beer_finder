@@ -384,18 +384,6 @@ python-versions = ">=3.7,<4.0"
 flake8 = ">=3.8.4,<6"
 
 [[package]]
-name = "flake8-import-order"
-version = "0.18.1"
-description = "Flake8 and pylama plugin that checks the ordering of import statements."
-category = "dev"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-pycodestyle = "*"
-setuptools = "*"
-
-[[package]]
 name = "flake8-isort"
 version = "5.0.3"
 description = "flake8 plugin that integrates isort ."
@@ -978,7 +966,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "94ac47e1b60f34f20e89509c90b920eba0eab7b01a7dc4bab856ec1785f3a6b6"
+content-hash = "fe13579b013f49e62e947eed1fafc949c24073a3c2cc9a0ffd599cd5610e1f44"
 
 [metadata.files]
 aiogram = [
@@ -1199,10 +1187,6 @@ flake8-builtins = [
 flake8-django = [
     {file = "flake8-django-1.1.5.tar.gz", hash = "sha256:d6c4b2b7eb5e4c3166d546c200bbb3d88667d985a0cfb1c097ccb9a125d6560d"},
     {file = "flake8_django-1.1.5-py3-none-any.whl", hash = "sha256:df77ada19fa7838bf1894d98d92cf5cbe65e20337eb7be21d76781883c237c32"},
-]
-flake8-import-order = [
-    {file = "flake8-import-order-0.18.1.tar.gz", hash = "sha256:a28dc39545ea4606c1ac3c24e9d05c849c6e5444a50fb7e9cdd430fc94de6e92"},
-    {file = "flake8_import_order-0.18.1-py2.py3-none-any.whl", hash = "sha256:90a80e46886259b9c396b578d75c749801a41ee969a235e163cfe1be7afd2543"},
 ]
 flake8-isort = [
     {file = "flake8-isort-5.0.3.tar.gz", hash = "sha256:0951398c343c67f4933407adbbfb495d4df7c038650c5d05753a006efcfeb390"},
