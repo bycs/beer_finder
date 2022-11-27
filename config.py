@@ -6,10 +6,7 @@ from dotenv import load_dotenv
 
 config = dotenv_values(".env")
 
-if config.get("ENV") == "dev":
-    dotenv_path = os.path.join(os.path.dirname(__file__), "dev.env")
-else:
-    dotenv_path = os.path.join(os.path.dirname(__file__), ".env")
+dotenv_path = os.path.join(os.path.dirname(__file__), ".env")
 
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)

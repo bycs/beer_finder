@@ -24,4 +24,4 @@ class BarBranchSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = BarBranch
-        fields = ("id", "bar", "metro", "address")
+        fields = ("id", "bar", "metro", "address", "latitude", "longitude")
