@@ -1,7 +1,7 @@
 ###############################################
 # Base Image
 ###############################################
-FROM --platform=amd64 python:3.10.8-slim as python-base
+FROM --platform=amd64 python:3.11.0-slim as python-base
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
