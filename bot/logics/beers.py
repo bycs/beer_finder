@@ -1,4 +1,3 @@
-from random import random
 from random import shuffle
 
 from aiogram import Dispatcher
@@ -81,7 +80,7 @@ class FilterBeers(BaseLogic):
             bar = data["bar"]
             filter_dict = {data["search_terms"]: data["request"]}
             beers = list(filter_beers(bar, filter_dict))
-            shuffle(beers, random)
+            shuffle(beers)
             if len(beers) > 5:
                 beers = beers[:5]
             for beer in beers:
