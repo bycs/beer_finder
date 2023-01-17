@@ -64,7 +64,9 @@ class Lambic(BaseBar):
             specifications_raw = list(specifications_raw.find_all("p"))
             for i, spec in enumerate(specifications_raw, start=1):
                 if i % 2:
-                    specifications_dict[spec.text] = specifications_raw[i].text
+                    specifications_dict[spec.text.capitalize()] = specifications_raw[
+                        i
+                    ].text.capitalize()
         except IndexError:
             print("Specifications not found!")
         return specifications_dict
