@@ -18,7 +18,7 @@ aiogram = "2.24"
 requests = "2.28.2"
 beautifulsoup4 = "4.11.1"
 
-python-dotenv = "0.21.0"
+python-dotenv = "0.21.1"
 
 [tool.poetry.dev-dependencies]
 # code linters
