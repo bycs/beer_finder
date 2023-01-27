@@ -33,7 +33,7 @@ flake8-isort = "6.0.0"
 dotenv-linter = "0.4.0"
 
 mypy = "0.991"
-django-stubs = "1.13.1"
+django-stubs = "1.14.0"
 djangorestframework-stubs = "1.8.0"
 
 pre-commit = "2.21.0"
