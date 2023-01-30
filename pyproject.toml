@@ -36,7 +36,7 @@ mypy = "0.991"
 django-stubs = "1.13.1"
 djangorestframework-stubs = "1.8.0"
 
-pre-commit = "2.21.0"
+pre-commit = "3.0.2"
 
 # testing code
 pytest = "7.2.0"
