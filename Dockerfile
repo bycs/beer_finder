@@ -1,14 +1,14 @@
 ###############################################
 # Base Image
 ###############################################
-FROM python:3.11.1-slim as python-base
+FROM python:3.11.2-slim as python-base
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PIP_NO_CACHE_DIR=off
 ENV PIP_DISABLE_PIP_VERSION_CHECK=on
 ENV PIP_DEFAULT_TIMEOUT=100
-ENV POETRY_VERSION=1.3.2
+ENV POETRY_VERSION=1.4.0
 ENV POETRY_HOME="/opt/poetry"
 ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 ENV POETRY_NO_INTERACTION=1

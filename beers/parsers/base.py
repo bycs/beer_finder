@@ -1,3 +1,5 @@
+import time
+
 from dataclasses import dataclass
 from typing import Literal
 
@@ -11,6 +13,13 @@ def clear_text(text: str) -> str:
     text = text.replace("\n", "")
     text = text.replace("\r", " ")
     text = text.replace("\xa0", " ")
+    text = text.replace("<p>", "")
+    text = text.replace("</p>", "")
+    text = text.replace("<br>", "")
+    text = text.replace("</br>", "")
+    text = text.replace("<strong>", "")
+    text = text.replace("</strong>", "")
+    text = text.replace("&nbsp;", " ")
     text = text.replace("/", " ")
     text = text.replace("  ", " ")
     text = text.strip()
@@ -19,12 +28,23 @@ def clear_text(text: str) -> str:
 
 def get_html(url: str) -> str | Literal[False]:
     try:
-        result = requests.get(url)
+        result = requests.get(url, verify=False)
         result.raise_for_status()
         return str(result.text)
     except (requests.RequestException, ValueError):
-        print("Error")
+        print(f"Error! Failed to connect to {url}")
         return False
+
+
+def limit_requests(second: int | float):
+    def limit_requests_decorator(func):
+        def wrapper(*args, **kwargs):
+            time.sleep(second)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return limit_requests_decorator
 
 
 @dataclass
