@@ -33,7 +33,7 @@ repos:
         entry: mypy
         pass_filenames: false
         args: [.]
-        additional_dependencies: ["django-stubs", "djangorestframework-stubs", "python-dotenv", "djangorestframework", "psycopg2-binary", 'drf_spectacular']
+        additional_dependencies: ["django-stubs", "djangorestframework-stubs", "python-dotenv", "djangorestframework", "psycopg2-binary", "drf_spectacular", "selenium", "webdriver_manager"]
 
 -   repo: https://github.com/wemake-services/dotenv-linter
     rev: 0.4.0

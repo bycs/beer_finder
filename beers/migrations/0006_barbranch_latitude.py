@@ -5,7 +5,6 @@ from django.db import models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("beers", "0005_alter_beer_managers_barbranch_longitude"),
     ]

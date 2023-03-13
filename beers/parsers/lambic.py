@@ -2,11 +2,20 @@ import random
 import re
 
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
 
 from beers.parsers.base import BaseBar
 from beers.parsers.base import clear_text
-from beers.parsers.base import get_html
 from beers.parsers.base import limit_requests
+
+
+options = Options()
+options.add_argument("--headless")
 
 
 class Lambic(BaseBar):
@@ -14,18 +23,29 @@ class Lambic(BaseBar):
 
     @property
     def urls(self) -> list[str]:
-        base_url = "https://lambic.ru"
-        start_url = "https://lambic.ru/beer/draft/"
-        beer_urls = []
-        html = get_html(start_url)
-        soup = BeautifulSoup(html, "html.parser")
-        beer_items = soup.select("*[class^='BeerSearch_beerItems']")
-        beers = beer_items[0].find_all("a")
+        start_url = "https://lambic.ru/sitemap"
+        with webdriver.Chrome(
+            service=Service(ChromeDriverManager().install()), options=options
+        ) as browser:
+            browser.get(start_url)
+            browser.implicitly_wait(random.uniform(2.5, 6.5))
+            confirm_age(browser=browser)
 
-        for beer in beers:
-            url = beer.get("href")
-            beer_urls.append(f"{base_url}{url}")
-        return beer_urls
+            links = browser.find_elements(By.CSS_SELECTOR, "a")
+            re_beer = re.compile(r"^.*\/beer\/\S+\/\S+$")
+            links_beer = [
+                link.get_attribute("href")
+                for link in links
+                if re_beer.match(link.get_attribute("href"))
+            ]
+
+            re_category = re.compile(r"^.*\/beer\/[0-9a-zA-Z-]+$")
+            links_category = [  # noqa: F841
+                link.get_attribute("href")
+                for link in links
+                if re_category.match(link.get_attribute("href"))
+            ]
+            return links_beer
 
     @staticmethod
     def get_beer_name(soup: BeautifulSoup) -> str:
@@ -71,7 +91,7 @@ class Lambic(BaseBar):
             print("Specifications not found!")
         return specifications_dict
 
-    @limit_requests(random.uniform(0.5, 3.5))
+    @limit_requests(random.uniform(4.5, 8.5))
     def parse_data(self, unparsed_data: str) -> list[dict]:
         soup = BeautifulSoup(unparsed_data, "html.parser")
 
@@ -83,3 +103,11 @@ class Lambic(BaseBar):
                 "specifications": self.get_beer_specifications(soup),
             }
         ]
+
+
+def confirm_age(browser: webdriver.Chrome) -> None:
+    """Подтверждение возраста"""
+    try:
+        browser.find_element(By.CLASS_NAME, "age-confirm-btn").click()
+    except NoSuchElementException:
+        pass
