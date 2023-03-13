@@ -103,7 +103,6 @@ class TestBeerViewSet(ViewSetTest):
         )
 
         def test_it_returns_beer(self, beer, json):
-
             expected = express_beer(beer)
             actual = json
             assert expected == actual

@@ -105,7 +105,6 @@ class TestBarBranchViewSet(ViewSetTest):
         )
 
         def test_it_returns_barbranch(self, barbranch, json):
-
             expected = express_barbranch(barbranch)
             actual = json
             assert expected == actual

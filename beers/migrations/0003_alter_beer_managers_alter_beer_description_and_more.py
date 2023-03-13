@@ -7,7 +7,6 @@ from django.db import models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("beers", "0002_alter_beer_managers_alter_bar_name_and_more"),
     ]
