@@ -1,4 +1,5 @@
 import os
+import tomllib
 
 from dotenv import dotenv_values
 from dotenv import load_dotenv
@@ -26,3 +27,14 @@ DB_NAME = os.getenv("DB_NAME", "db")
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 GRAPHHOPPER_KEY = os.getenv("GRAPHHOPPER_KEY")
 YANDEXMAP_KEY = os.getenv("YANDEXMAP_KEY")
+
+
+def get_version() -> str:
+    with open("pyproject.toml", "rb") as f:
+        data = tomllib.load(f)
+        version: str = data["tool"]["poetry"]["version"]
+        os.environ.setdefault("VERSION", version)
+        return version
+
+
+VERSION = os.getenv("VERSION", get_version())
