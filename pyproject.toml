@@ -23,7 +23,7 @@ webdriver-manager = "3.8.5"
 
 python-dotenv = "1.0.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 # code linters
 black = "23.1.0"
 isort = "5.12.0"
@@ -39,7 +39,7 @@ mypy = "1.1.1"
 django-stubs = "1.16.0"
 djangorestframework-stubs = "1.10.0"
 
-pre-commit = "3.1.1"
+pre-commit = "3.2.0"
 
 # testing code
 pytest = "7.2.2"
