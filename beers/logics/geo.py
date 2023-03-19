@@ -59,7 +59,7 @@ class YandexMapGeo:
         try:
             featuremember = response["response"]["GeoObjectCollection"]["featureMember"][0]
             coordinates = featuremember["GeoObject"]["Point"]["pos"].split()
-            latitude, longitude = coordinates
+            longitude, latitude = coordinates
             point = Point(latitude, longitude)
             return point
         except KeyError or IndexError:  # type: ignore

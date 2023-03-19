@@ -6,9 +6,12 @@ from telegram.ext import Application
 from telegram.ext import ApplicationBuilder
 from telegram.ext import CommandHandler
 from telegram.ext import ContextTypes
+from telegram.ext import ConversationHandler
 
 from bot.db import db
 from bot.db import logging_commands
+from bot.handlers.bar_geo import handler_barbranch_geo
+from bot.handlers.bars import handler_bars
 from config import BOT_TOKEN
 
 
@@ -19,14 +22,6 @@ logging.basicConfig(
 )
 
 
-async def post_init(application: Application) -> None:
-    commands = [
-        BotCommand("start", "Запустить / обновить бота"),
-        BotCommand("help", "Помощь"),
-    ]
-    await application.bot.set_my_commands(commands)
-
-
 async def command_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     text = "Привет!\nЯ постараюсь помочь тебе с выбором пенного!\n\nPowered by Python 🐍"
 
@@ -35,9 +30,9 @@ async def command_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 Продолжая пользоваться ботом, Вы подтверждаете, что вам больше 18 лет.\n
 🔞 Чрезмерное употребление алкоголя вредит Вашему здоровью."""
 
-    await update.message.reply_text(text)  # type: ignore
-    await update.message.reply_text(disclaimer)  # type: ignore
-    logging_commands(db, update.effective_user.id, update.message.chat.id, "start")  # type: ignore
+    await update.message.reply_text(text)  # type: ignore[union-attr]
+    await update.message.reply_text(disclaimer)  # type: ignore[union-attr]
+    logging_commands(db, update, "start")
 
 
 handler_start = CommandHandler("start", command_start)
@@ -46,15 +41,27 @@ handler_start = CommandHandler("start", command_start)
 async def command_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     text = "За помощью обращайся к @DD506"
     await update.message.reply_text(text)  # type: ignore[union-attr]
-    logging_commands(db, update.effective_user.id, update.message.chat.id, "help")  # type: ignore
+    logging_commands(db, update, "help")
 
 
 handler_help = CommandHandler("help", command_help)
 
 
-handlers: list[CommandHandler] = [
+async def post_init(application: Application) -> None:
+    commands: list[BotCommand] = [
+        BotCommand("start", "Запустить / обновить бота"),
+        BotCommand("bars", "Список баров"),
+        BotCommand("bar_branch_geo", "Поиск ближайшего бара"),
+        BotCommand("help", "Помощь"),
+    ]
+    await application.bot.set_my_commands(commands)
+
+
+handlers: list[CommandHandler | ConversationHandler] = [
     handler_start,
     handler_help,
+    handler_bars,
+    handler_barbranch_geo,
 ]
 
 
