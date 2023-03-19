@@ -24,7 +24,13 @@ DB_USER = os.getenv("DB_USER", "user")
 DB_PASS = os.getenv("DB_PASS", "pass")
 DB_NAME = os.getenv("DB_NAME", "db")
 
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "token")
+
+MONGO_HOST = os.getenv("MONGO_HOST", "localhost")
+MONGO_USER = os.getenv("MONGO_INITDB_ROOT_USERNAME", "user")
+MONGO_PASS = os.getenv("MONGO_INITDB_ROOT_PASSWORD", "pass")
+MONGO_URI = f"mongodb://{MONGO_USER}:{MONGO_PASS}@{MONGO_HOST}:27017/"
+
 GRAPHHOPPER_KEY = os.getenv("GRAPHHOPPER_KEY")
 YANDEXMAP_KEY = os.getenv("YANDEXMAP_KEY")
 
