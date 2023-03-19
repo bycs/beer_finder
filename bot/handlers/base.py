@@ -23,6 +23,8 @@ logging.basicConfig(
 
 
 async def command_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    assert update.message is not None, "update.message must not be None"
+
     text = "Привет!\nЯ постараюсь помочь тебе с выбором пенного!\n\nPowered by Python 🐍"
 
     disclaimer = """
@@ -30,8 +32,8 @@ async def command_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 Продолжая пользоваться ботом, Вы подтверждаете, что вам больше 18 лет.\n
 🔞 Чрезмерное употребление алкоголя вредит Вашему здоровью."""
 
-    await update.message.reply_text(text)  # type: ignore[union-attr]
-    await update.message.reply_text(disclaimer)  # type: ignore[union-attr]
+    await update.message.reply_text(text)
+    await update.message.reply_text(disclaimer)
     logging_commands(db, update, "start")
 
 
@@ -39,8 +41,10 @@ handler_start = CommandHandler("start", command_start)
 
 
 async def command_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    assert update.message is not None, "update.message must not be None"
+
     text = "За помощью обращайся к @DD506"
-    await update.message.reply_text(text)  # type: ignore[union-attr]
+    await update.message.reply_text(text)
     logging_commands(db, update, "help")
 
 

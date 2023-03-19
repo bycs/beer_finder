@@ -21,50 +21,60 @@ from bot.db import logging_commands
 
 
 async def choosing_bar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    assert update.message is not None, "update.message must not be None"
+
     bars = get_bars().values_list("name", flat=True)
     keyboard = [[*bars], ["Любой бар"]]
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Выбери бар (кнопкой)"
-    await update.message.reply_text(text, reply_markup=markup)  # type: ignore[union-attr]
+    await update.message.reply_text(text, reply_markup=markup)
     logging_commands(db, update, "bar_branch_geo__start")
     return "step_2"
 
 
 async def get_address_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
-    if update.message.text == "Любой бар":  # type: ignore[union-attr]
-        context.user_data["bar_branch_geo"] = {"bar": None}  # type: ignore[index]
+    assert update.message is not None, "update.message must not be None"
+    assert context.user_data is not None, "context.user_data must not be None"
+
+    if update.message.text == "Любой бар":
+        context.user_data["bar_branch_geo"] = {"bar": None}
     else:
-        context.user_data["bar_branch_geo"] = {"bar": update.message.text}  # type: ignore
+        context.user_data["bar_branch_geo"] = {"bar": update.message.text}
 
     keyboard = [[KeyboardButton("📍 Отправить геопозицию", request_location=True)]]
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Отправьте геопозицию или введите адрес"
-    await update.message.reply_text(text, reply_markup=markup)  # type: ignore[union-attr]
+    await update.message.reply_text(text, reply_markup=markup)
     logging_commands(db, update, "bar_branch_geo__step_2")
     return "finish"
 
 
 async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    assert update.message is not None, "update.message must not be None"
+    assert context.user_data is not None, "context.user_data must not be None"
+
     markup = ReplyKeyboardRemove()
-    if update.message.location:  # type: ignore[union-attr]
-        context.user_data["bar_branch_geo"]["search_type"] = "location"  # type: ignore
-        longitude = update.message.location.longitude  # type: ignore[union-attr]
-        latitude = update.message.location.latitude  # type: ignore[union-attr]
+    if update.message.location:
+        context.user_data["bar_branch_geo"]["search_type"] = "location"
+        longitude = update.message.location.longitude
+        latitude = update.message.location.latitude
         location_user = Point(latitude, longitude)
 
     else:
-        context.user_data["bar_branch_geo"]["search_type"] = "address"  # type: ignore[index]
+        context.user_data["bar_branch_geo"]["search_type"] = "address"
         geo = YandexMapGeo()
-        point = geo.geocode(update.message.text)  # type: ignore
+        assert update.message.text is not None
+        address: str = update.message.text
+        point = geo.geocode(address)
         if point:
             location_user = point
         else:
             text = "Не удалось определить кооринаты 🤷🏻‍"
-            await update.message.reply_text(text, reply_markup=markup)  # type: ignore[union-attr]
+            await update.message.reply_text(text, reply_markup=markup)
             logging_commands(db, update, "bar_branch_geo__finish")
             return ConversationHandler.END
 
-    bars_branch = get_bars_branches(context.user_data["bar_branch_geo"]["bar"])  # type: ignore
+    bars_branch = get_bars_branches(context.user_data["bar_branch_geo"]["bar"])
     distances = {}
     for bar in bars_branch:
         point_bar = bar.point.split(",")
@@ -83,7 +93,6 @@ async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TY
         for bar in distances_sorted:
             ya = "https://yandex.ru/maps/"
             maps_link = f"{ya}?ll={bar.point}&z=16&text={bar.bar.name.replace(' ', '%20')}"
-            # address = md.hlink(bar.address, maps_link)
             address = f"<a href='{maps_link}'>{bar.address}</a>"
             address_text = f"📍 {address}\n\n"
             name_text = f"🍻 {bar.barbranch_name} ~{distances_sorted[bar]} км\n"
@@ -91,7 +100,7 @@ async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TY
             text += name_text + address_text + website_text
         response_text = "Самые близкие бары:\n\n" + text
 
-    await update.message.reply_text(  # type: ignore[union-attr]
+    await update.message.reply_text(
         response_text,
         reply_markup=markup,
         parse_mode="HTML",
