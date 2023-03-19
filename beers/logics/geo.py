@@ -57,8 +57,8 @@ class YandexMapGeo:
         r = requests.get(url, params=params)
         response = r.json()
         try:
-            featuremember = response["response"]["GeoObjectCollection"]["featureMember"][0]
-            coordinates = featuremember["GeoObject"]["Point"]["pos"].split()
+            feature_member = response["response"]["GeoObjectCollection"]["featureMember"][0]
+            coordinates = feature_member["GeoObject"]["Point"]["pos"].split()
             longitude, latitude = coordinates
             point = Point(latitude, longitude)
             return point
