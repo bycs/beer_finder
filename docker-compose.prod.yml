@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  django:
+    container_name: django
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - .:/source/
+      - static:/source/staticfiles/
+      - media:/source/mediafiles/
+    working_dir: /source/
+    command:  bash -c "python manage.py migrate && gunicorn server.wsgi --bind 0.0.0.0:8000"
+    depends_on:
+      - postgres
+
+  bot:
+    container_name: bot
+    build: .
+    env_file:
+      - .env
+    working_dir: /source/
+    command: python run_bot.py
+    depends_on:
+      - django
+      - postgres
+      - mongo
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+
+  mongo:
+      container_name: mongo
+      image: mongo:latest
+      restart: always
+      volumes:
+          - mongo_data:/var/lib/postgresql/data/
+      env_file:
+          - .env
+
+  nginx:
+    build: ./nginx
+    volumes:
+        - static:/source/staticfiles/
+        - media:/source/mediafiles/
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+
+volumes:
+  postgres_data:
+  mongo_data:
+  static:
+  media:

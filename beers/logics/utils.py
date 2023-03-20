@@ -54,7 +54,7 @@ def get_top_values(bar: str | None = None, key: str | None = None) -> list[str]:
     return [x for x in result if x is not None]
 
 
-def filter_beers(bar: str | None = None, *args: dict[str, str]) -> QuerySet[Beer]:
+def filter_beers(bar: str | None = None, *args: dict[str, str | None]) -> QuerySet[Beer]:
     if bar is None:
         beers = Beer.objects.all()
     else:
