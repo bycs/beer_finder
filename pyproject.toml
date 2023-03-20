@@ -16,7 +16,6 @@ drf-spectacular = "0.26.1"
 # Bot
 python-telegram-bot = { extras = ["socks"], version = "20.1" }
 pymongo = "4.3.3"
-aiogram = "2.25.1"
 # Parsing
 requests = "2.28.2"
 beautifulsoup4 = "4.12.0"
