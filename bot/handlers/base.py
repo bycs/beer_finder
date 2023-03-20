@@ -10,7 +10,8 @@ from telegram.ext import ConversationHandler
 
 from bot.db import db
 from bot.db import logging_commands
-from bot.handlers.bar_geo import handler_barbranch_geo
+from bot.handlers.bar_branch_geo import handler_bar_branch_geo
+from bot.handlers.bar_branch_list import handler_bar_branch_list
 from bot.handlers.bars import handler_bars
 from config import BOT_TOKEN
 
@@ -56,6 +57,7 @@ async def post_init(application: Application) -> None:
         BotCommand("start", "Запустить / обновить бота"),
         BotCommand("bars", "Список баров"),
         BotCommand("bar_branch_geo", "Поиск ближайшего бара"),
+        BotCommand("bar_branch_list", "Поиск бара по метро"),
         BotCommand("help", "Помощь"),
     ]
     await application.bot.set_my_commands(commands)
@@ -65,7 +67,8 @@ handlers: list[CommandHandler | ConversationHandler] = [
     handler_start,
     handler_help,
     handler_bars,
-    handler_barbranch_geo,
+    handler_bar_branch_geo,
+    handler_bar_branch_list,
 ]
 
 

@@ -28,7 +28,7 @@ async def choosing_bar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> st
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Выбери бар (кнопкой)"
     await update.message.reply_text(text, reply_markup=markup)
-    logging_commands(db, update, "bar_branch_geo__start")
+    logging_commands(db, update, "choosing_bar")
     return "step_2"
 
 
@@ -110,7 +110,7 @@ async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TY
     return ConversationHandler.END
 
 
-handler_barbranch_geo = ConversationHandler(
+handler_bar_branch_geo = ConversationHandler(
     entry_points=[CommandHandler("bar_branch_geo", choosing_bar)],
     states={
         "step_2": [MessageHandler(filters.TEXT, get_address_user)],
