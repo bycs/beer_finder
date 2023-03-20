@@ -37,10 +37,11 @@ async def get_address_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     assert context.user_data is not None, "context.user_data must not be None"
 
     if update.message.text == "Любой бар":
-        context.user_data["bar_branch_geo"] = {"bar": None}
+        bar = None
     else:
-        context.user_data["bar_branch_geo"] = {"bar": update.message.text}
+        bar = update.message.text
 
+    context.user_data["bar_branch_geo"] = {"bar": bar}
     keyboard = [[KeyboardButton("📍 Отправить геопозицию", request_location=True)]]
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Отправьте геопозицию или введите адрес"
@@ -49,22 +50,21 @@ async def get_address_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     return "finish"
 
 
-async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     assert update.message is not None, "update.message must not be None"
     assert context.user_data is not None, "context.user_data must not be None"
 
     markup = ReplyKeyboardRemove()
     if update.message.location:
-        context.user_data["bar_branch_geo"]["search_type"] = "location"
+        search_type = "location"
         longitude = update.message.location.longitude
         latitude = update.message.location.latitude
         location_user = Point(latitude, longitude)
-
     else:
-        context.user_data["bar_branch_geo"]["search_type"] = "address"
+        search_type = "address"
         geo = YandexMapGeo()
         assert update.message.text is not None
-        address: str = update.message.text
+        address = update.message.text
         point = geo.geocode(address)
         if point:
             location_user = point
@@ -74,6 +74,7 @@ async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TY
             logging_commands(db, update, "bar_branch_geo__finish")
             return ConversationHandler.END
 
+    context.user_data["bar_branch_geo"]["search_type"] = search_type
     bars_branch = get_bars_branches(context.user_data["bar_branch_geo"]["bar"])
     distances = {}
     for bar in bars_branch:

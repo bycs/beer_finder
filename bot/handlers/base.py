@@ -26,8 +26,14 @@ handler_start = CommandHandler("start", command_start)
 
 async def command_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     assert update.message is not None, "update.message must not be None"
-
-    text = "За помощью обращайся к @DD506"
+    text = """Список команд:
+/start - Запустить / обновить бота
+/bars - Список баров
+/bar_branch_geo - Поиск ближайшего бара
+/bar_branch_list - Поиск бара по метро
+/beer_filter - Подбор пива
+/help - Помощь"""
+    text += "\n\nПо другим вопросам обращайся к @DD506"
     await update.message.reply_text(text)
     logging_commands(db, update, "help")
 

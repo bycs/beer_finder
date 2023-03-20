@@ -18,10 +18,11 @@ async def get_metro_bar_branch(update: Update, context: ContextTypes.DEFAULT_TYP
     assert context.user_data is not None, "context.user_data must not be None"
 
     if update.message.text == "Любой бар":
-        context.user_data["bar_branch_list"] = {"bar": None}
+        bar = None
     else:
-        context.user_data["bar_branch_list"] = {"bar": update.message.text}
-    bar = context.user_data["bar_branch_list"]["bar"]
+        bar = update.message.text
+
+    context.user_data["bar_branch_list"] = {"bar": bar}
     bars_branch = get_bars_branches(bar)
     context.user_data["bar_branch_list"]["bars_branch"] = bars_branch
     metro_list = list(bars_branch.values_list("metro", flat=True))
@@ -36,19 +37,19 @@ async def get_metro_bar_branch(update: Update, context: ContextTypes.DEFAULT_TYP
     return "finish"
 
 
-async def bar_branch_list_finish(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def bar_branch_list_finish(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     assert update.message is not None, "update.message must not be None"
     assert context.user_data is not None, "context.user_data must not be None"
 
     markup = ReplyKeyboardRemove()
+    bars_branch = context.user_data["bar_branch_list"]["bars_branch"]
     if update.message.text == "Показать все":
-        context.user_data["bar_branch_list"]["metro"] = None
-        bars_branch = context.user_data["bar_branch_list"]["bars_branch"]
+        metro = None
     else:
-        context.user_data["bar_branch_list"]["metro"] = update.message.text
-        bars_branch = context.user_data["bar_branch_list"]["bars_branch"]
-        bars_branch = bars_branch.filter(metro=update.message.text)
+        metro = update.message.text
+        bars_branch = bars_branch.filter(metro=metro)
 
+    context.user_data["bar_branch_list"]["metro"] = metro
     bars_branch_list = list(bars_branch)
     if len(bars_branch_list) == 0:
         response_text = "К сожалению, мы пока не можем найти такой адрес."

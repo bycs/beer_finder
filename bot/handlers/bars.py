@@ -15,7 +15,7 @@ async def command_bars(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     for bar in bars:
         bars_text += f"🍻 {bar.name}\nСайт: {bar.website}\n\n"
     text = "Сейчас мы знаем о следующих барах:\n\n" + bars_text
-    await update.message.reply_text(text)
+    await update.message.reply_text(text, disable_web_page_preview=True)
     logging_commands(db, update, "bars")
 
 
