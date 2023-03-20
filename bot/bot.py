@@ -12,6 +12,7 @@ from bot.handlers.bar_branch_list import handler_bar_branch_list
 from bot.handlers.bars import handler_bars
 from bot.handlers.base import handler_help
 from bot.handlers.base import handler_start
+from bot.handlers.beer_filter import handler_beer_filter
 from config import BOT_TOKEN
 
 
@@ -28,6 +29,7 @@ async def post_init(application: Application) -> None:
         BotCommand("bars", "Список баров"),
         BotCommand("bar_branch_geo", "Поиск ближайшего бара"),
         BotCommand("bar_branch_list", "Поиск бара по метро"),
+        BotCommand("beer_filter", "Подбор пива"),
         BotCommand("help", "Помощь"),
     ]
     await application.bot.set_my_commands(commands)
@@ -39,6 +41,7 @@ handlers: list[CommandHandler | ConversationHandler] = [
     handler_bars,
     handler_bar_branch_geo,
     handler_bar_branch_list,
+    handler_beer_filter,
 ]
 
 

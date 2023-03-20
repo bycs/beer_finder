@@ -34,12 +34,14 @@ repos:
         pass_filenames: false
         args: [.]
         additional_dependencies: [
+            "Django==4.2rc1",
             "drf_spectacular",
             "django-stubs",
             "djangorestframework",
             "djangorestframework-stubs",
-            "psycopg2-binary",
+            "psycopg[binary]",
             "python-dotenv",
+            "python-telegram-bot[socks]",
             "selenium",
             "webdriver_manager"
         ]
