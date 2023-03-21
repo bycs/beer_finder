@@ -7,11 +7,13 @@ from telegram.ext import ConversationHandler
 from telegram.ext import MessageHandler
 from telegram.ext import filters
 
-from beers.logics.utils import get_bars_branches
+from beers.logics.utils import get_bar_branches
+from beers.models.bars import BarBranch
 from bot.db import db
 from bot.db import logging_commands
 from bot.db import logging_search_query
 from bot.handlers.bar_branch_geo import choosing_bar
+from bot.utils import list_separator
 
 
 async def get_metro_bar_branch(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -20,16 +22,18 @@ async def get_metro_bar_branch(update: Update, context: ContextTypes.DEFAULT_TYP
 
     if update.message.text == "Любой бар":
         bar = None
+        metro = BarBranch.objects.order_by("metro").values_list("metro", flat=True).distinct()
     else:
         bar = update.message.text
+        metro = (
+            BarBranch.objects.order_by("metro")
+            .filter(bar__name=bar)
+            .values_list("metro", flat=True)
+            .distinct()
+        )
 
     context.user_data["bar_branch_list"] = {"bar": bar}
-    bars_branch = get_bars_branches(bar)
-    context.user_data["bar_branch_list"]["bars_branch"] = bars_branch
-    metro_list = list(bars_branch.values_list("metro", flat=True))
-    metro_list = list(set(metro_list))
-    metro_list.sort()
-    keyboard_metro = [metro_list[i : i + 3] for i in range(0, len(metro_list), 3)]
+    keyboard_metro = list_separator(list(metro), 2)
     keyboard = [*keyboard_metro, ["Показать все"]]
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Выбери станцию метро (кнопкой)"
@@ -43,20 +47,20 @@ async def bar_branch_list_finish(update: Update, context: ContextTypes.DEFAULT_T
     assert context.user_data is not None, "context.user_data must not be None"
 
     markup = ReplyKeyboardRemove()
-    bars_branch = context.user_data["bar_branch_list"]["bars_branch"]
+    bar = context.user_data["bar_branch_list"]["bar"]
+    bar_branches = get_bar_branches(bar)
     if update.message.text == "Показать все":
         metro = None
     else:
         metro = update.message.text
-        bars_branch = bars_branch.filter(metro=metro)
+        bar_branches = bar_branches.filter(metro=metro)
 
     context.user_data["bar_branch_list"]["metro"] = metro
-    bars_branch_list = list(bars_branch)
-    if len(bars_branch_list) == 0:
+    if len(bar_branches) == 0:
         response_text = "К сожалению, мы пока не можем найти такой адрес."
     else:
         text = ""
-        for bar in bars_branch_list:
+        for bar in bar_branches:
             ya = "https://yandex.ru/maps/"
             maps_link = f"{ya}?ll={bar.point}&z=16&text={bar.bar.name.replace(' ', '%20')}"
             address = f"<a href='{maps_link}'>{bar.address}</a>"
@@ -71,7 +75,6 @@ async def bar_branch_list_finish(update: Update, context: ContextTypes.DEFAULT_T
         disable_web_page_preview=True,
     )
     search_query = context.user_data["bar_branch_list"]
-    del search_query["bars_branch"]
     logging_search_query(db, update, search_query, "bar_branch_list")
     logging_commands(db, update, "bar_branch_list__finish")
     return ConversationHandler.END

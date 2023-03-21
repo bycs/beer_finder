@@ -31,7 +31,7 @@ class BarBranch(models.Model):
     def barbranch_name(self) -> str:
         return f"{self.bar.name} - {self.metro}"
 
-    barbranch_name.fget.short_description = "BarBranch Name"  # type: ignore [attr-defined]
+    barbranch_name.fget.short_description = "BarBranch Name"  # type: ignore[attr-defined]
 
     @property
     def point(self) -> str:
@@ -39,7 +39,7 @@ class BarBranch(models.Model):
             self.get_geocode()
         return f"{self.latitude},{self.longitude}"
 
-    point.fget.short_description = "Point"  # type: ignore [attr-defined]
+    point.fget.short_description = "Point"  # type: ignore[attr-defined]
 
     class Meta:
         ordering = ("bar", "metro")

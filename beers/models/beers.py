@@ -17,7 +17,7 @@ class Beer(models.Model):
             return None
         return int(self.price / 100)
 
-    price_rub.fget.short_description = "Price Rub"  # type: ignore [attr-defined]
+    price_rub.fget.short_description = "Price Rub"  # type: ignore[attr-defined]
 
     objects = BeerManager()
 
