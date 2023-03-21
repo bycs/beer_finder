@@ -18,6 +18,7 @@ from beers.logics.utils import get_bars
 from beers.logics.utils import get_bars_branches
 from bot.db import db
 from bot.db import logging_commands
+from bot.db import logging_search_query
 
 
 async def choosing_bar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -107,6 +108,8 @@ async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TY
         parse_mode="HTML",
         disable_web_page_preview=True,
     )
+    search_query = context.user_data["bar_branch_geo"]
+    logging_search_query(db, update, search_query, "bar_branch_geo")
     logging_commands(db, update, "bar_branch_geo__finish")
     return ConversationHandler.END
 

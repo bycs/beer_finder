@@ -15,6 +15,7 @@ from beers.logics.utils import get_top_values
 from beers.models.beers import Beer
 from bot.db import db
 from bot.db import logging_commands
+from bot.db import logging_search_query
 from bot.handlers.bar_branch_geo import choosing_bar
 
 
@@ -45,7 +46,6 @@ async def beer_filter_step_3(update: Update, context: ContextTypes.DEFAULT_TYPE)
     if update.message.text == "Показать все":
         search_terms = None
         context.user_data["beer_filter"]["search_terms"] = search_terms
-        context.user_data["beer_filter"]["request"] = None
         keyboard = [["Показать результаты"]]
         markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
         text = "Попробуй в следующий раз поставить фильтры"
@@ -72,7 +72,7 @@ async def beer_filter_finish(update: Update, context: ContextTypes.DEFAULT_TYPE)
     assert context.user_data is not None, "context.user_data must not be None"
 
     markup = ReplyKeyboardRemove()
-    if update.message.text == "Показать все":
+    if update.message.text == "Показать все" or "Показать результаты":
         request = None
     else:
         request = update.message.text
@@ -100,6 +100,8 @@ async def beer_filter_finish(update: Update, context: ContextTypes.DEFAULT_TYPE)
         specifications_text = get_specifications_text(beer)
         text = name_text + price_text + bar_text + description_text + specifications_text
         await update.message.reply_text(text)
+    search_query = context.user_data["beer_filter"]
+    logging_search_query(db, update, search_query, "beer_filter")
     logging_commands(db, update, "beer_filter__finish")
     return ConversationHandler.END
 

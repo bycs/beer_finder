@@ -10,6 +10,7 @@ from telegram.ext import filters
 from beers.logics.utils import get_bars_branches
 from bot.db import db
 from bot.db import logging_commands
+from bot.db import logging_search_query
 from bot.handlers.bar_branch_geo import choosing_bar
 
 
@@ -69,6 +70,9 @@ async def bar_branch_list_finish(update: Update, context: ContextTypes.DEFAULT_T
         parse_mode="HTML",
         disable_web_page_preview=True,
     )
+    search_query = context.user_data["bar_branch_list"]
+    del search_query["bars_branch"]
+    logging_search_query(db, update, search_query, "bar_branch_list")
     logging_commands(db, update, "bar_branch_list__finish")
     return ConversationHandler.END
 
