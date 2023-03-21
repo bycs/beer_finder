@@ -30,6 +30,12 @@ services:
   postgres:
     container_name: postgres
     image: postgres:latest
+    command: [
+        "postgres", "-c", "log_statement=all",
+        "-c", "log_destination=stderr,csvlog",
+        "-c", "logging_collector=on",
+        "-c", "log_min_duration_statement=0"
+    ]
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
