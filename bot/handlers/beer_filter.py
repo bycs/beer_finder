@@ -1,5 +1,3 @@
-from random import shuffle
-
 from telegram import ReplyKeyboardMarkup
 from telegram import ReplyKeyboardRemove
 from telegram import Update
@@ -15,7 +13,9 @@ from beers.logics.utils import get_top_values
 from beers.models.beers import Beer
 from bot.db import db
 from bot.db import logging_commands
+from bot.db import logging_search_query
 from bot.handlers.bar_branch_geo import choosing_bar
+from bot.utils import list_separator
 
 
 async def beer_filter_step_2(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -28,8 +28,8 @@ async def beer_filter_step_2(update: Update, context: ContextTypes.DEFAULT_TYPE)
         bar = update.message.text
 
     context.user_data["beer_filter"] = {"bar": bar}
-    keys = get_top_keys(bar)
-    keyboard_keys = [keys[i : i + 3] for i in range(0, len(keys), 3)]
+    keys = get_top_keys(6, bar)
+    keyboard_keys = list_separator(list(keys), 3)
     keyboard = [*keyboard_keys, ["Показать все"]]
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Выбери фильтр (кнопкой)"
@@ -40,12 +40,12 @@ async def beer_filter_step_2(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 async def beer_filter_step_3(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     assert update.message is not None, "update.message must not be None"
+    assert update.message.text is not None, "update.message.text must not be None"
     assert context.user_data is not None, "context.user_data must not be None"
 
     if update.message.text == "Показать все":
         search_terms = None
         context.user_data["beer_filter"]["search_terms"] = search_terms
-        context.user_data["beer_filter"]["request"] = None
         keyboard = [["Показать результаты"]]
         markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
         text = "Попробуй в следующий раз поставить фильтры"
@@ -57,8 +57,8 @@ async def beer_filter_step_3(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
     context.user_data["beer_filter"]["search_terms"] = search_terms
     bar = context.user_data["beer_filter"]["bar"]
-    values = get_top_values(bar, search_terms)
-    keyboard_values = [values[i : i + 3] for i in range(0, len(values), 3)]
+    values = get_top_values(search_terms, 6, bar)
+    keyboard_values = list_separator(list(values), 3)
     keyboard = [*keyboard_values, ["Показать все"]]
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Выбери фильтр (кнопкой)"
@@ -72,7 +72,7 @@ async def beer_filter_finish(update: Update, context: ContextTypes.DEFAULT_TYPE)
     assert context.user_data is not None, "context.user_data must not be None"
 
     markup = ReplyKeyboardRemove()
-    if update.message.text == "Показать все":
+    if update.message.text == "Показать все" or "Показать результаты":
         request = None
     else:
         request = update.message.text
@@ -84,10 +84,7 @@ async def beer_filter_finish(update: Update, context: ContextTypes.DEFAULT_TYPE)
     bar_text = get_bar_text(bar)
     search_text = get_search_text_text(search_terms, request)
     filter_dict = {search_terms: request}
-    beers = list(filter_beers(bar, filter_dict))
-    shuffle(beers)
-    if len(beers) > 5:
-        beers = beers[:5]
+    beers = filter_beers(bar, 5, filter_dict)
     count_beers = len(beers)
     answer_text = f"\n\nЯ сформировал специально для тебя {count_beers} сортов пива:"
     text = bar_text + search_text + answer_text
@@ -100,6 +97,8 @@ async def beer_filter_finish(update: Update, context: ContextTypes.DEFAULT_TYPE)
         specifications_text = get_specifications_text(beer)
         text = name_text + price_text + bar_text + description_text + specifications_text
         await update.message.reply_text(text)
+    search_query = context.user_data["beer_filter"]
+    logging_search_query(db, update, search_query, "beer_filter")
     logging_commands(db, update, "beer_filter__finish")
     return ConversationHandler.END
 

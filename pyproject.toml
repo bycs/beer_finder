@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "beer_finder"
-version = "0.4.0"
+version = "0.4.1"
 description = "The app will help you find the best beer for you and your friends."
 authors = ["Stas Cartoon <bycs@mail.ru>"]
 readme = "README.md"

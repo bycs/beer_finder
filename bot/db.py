@@ -24,3 +24,18 @@ def logging_commands(database: Database, update: Update, command: str) -> None:
             "datetime": datetime.now(),
         }
     )
+
+
+def logging_search_query(
+    database: Database, update: Update, search_query: dict, command: str
+) -> None:
+    assert update.effective_user is not None, "update.effective_user must not be None"
+
+    database.log_search_query.insert_one(
+        {
+            "command": command,
+            "user_id": update.effective_user.id,
+            "search_query": search_query,
+            "datetime": datetime.now(),
+        }
+    )

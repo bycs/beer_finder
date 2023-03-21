@@ -35,6 +35,8 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - .env
+    environment:
+        - POSTGRES_LOG_STATEMENT=all -d postgres
     ports:
         - "5432:5432"
 

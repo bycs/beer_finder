@@ -14,17 +14,20 @@ from telegram.ext import filters
 from beers.logics.geo import Point
 from beers.logics.geo import YandexMapGeo
 from beers.logics.geo import get_distance
-from beers.logics.utils import get_bars
-from beers.logics.utils import get_bars_branches
+from beers.logics.utils import get_bar_branches
+from beers.models.bars import Bar
 from bot.db import db
 from bot.db import logging_commands
+from bot.db import logging_search_query
+from bot.utils import list_separator
 
 
 async def choosing_bar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     assert update.message is not None, "update.message must not be None"
 
-    bars = get_bars().values_list("name", flat=True)
-    keyboard = [[*bars], ["Любой бар"]]
+    bars = Bar.objects.values_list("name", flat=True).distinct()
+    keyboard_bars = list_separator(list(bars), 3)
+    keyboard = [*keyboard_bars, ["Любой бар"]]
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Выбери бар (кнопкой)"
     await update.message.reply_text(text, reply_markup=markup)
@@ -75,13 +78,15 @@ async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TY
             return ConversationHandler.END
 
     context.user_data["bar_branch_geo"]["search_type"] = search_type
-    bars_branch = get_bars_branches(context.user_data["bar_branch_geo"]["bar"])
+    bar = context.user_data["bar_branch_geo"]["bar"]
+    bar_branches = get_bar_branches(bar)
+    bar_branches.distinct()
     distances = {}
-    for bar in bars_branch:
-        point_bar = bar.point.split(",")
-        location_bar = Point(float(point_bar[0]), float(point_bar[1]))
+    for bar_branch in bar_branches:
+        bar_latitude, bar_longitude = map(float, bar_branch.point.split(","))
+        location_bar = Point(bar_latitude, bar_longitude)
         distance = get_distance(location_user, location_bar)
-        distances[bar] = round(distance / 1000, 1)
+        distances[bar_branch] = round(distance / 1000, 1)
 
     distances_dict = dict(Counter(distances))
     distances_tuple = sorted(distances_dict.items(), key=itemgetter(1))
@@ -107,6 +112,8 @@ async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TY
         parse_mode="HTML",
         disable_web_page_preview=True,
     )
+    search_query = context.user_data["bar_branch_geo"]
+    logging_search_query(db, update, search_query, "bar_branch_geo")
     logging_commands(db, update, "bar_branch_geo__finish")
     return ConversationHandler.END
 
