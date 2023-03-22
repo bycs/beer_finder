@@ -36,9 +36,9 @@ repos:
         additional_dependencies: [
             "Django==4.2rc1",
             "drf_spectacular",
-            "django-stubs",
+            "django-stubs[compatible-mypy]",
             "djangorestframework",
-            "djangorestframework-stubs",
+            "djangorestframework-stubs[compatible-mypy]",
             "psycopg[binary]",
             "python-dotenv",
             "python-telegram-bot[socks]",
