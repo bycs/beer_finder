@@ -37,6 +37,7 @@ repos:
             "Django==4.2rc1",
             "drf_spectacular",
             "django-stubs[compatible-mypy]",
+            "django-filter",
             "djangorestframework",
             "djangorestframework-stubs[compatible-mypy]",
             "psycopg[binary]",
