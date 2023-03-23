@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     # Third-party apps
     "rest_framework",
     "drf_spectacular",
+    "django_filters",
     # Local
     "beers.apps.BeersConfig",
     "bot.apps.BotConfig",
@@ -115,7 +116,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "PAGE_SIZE": 5,
+    "PAGE_SIZE": 6,
 }
 
 SPECTACULAR_SETTINGS = {

@@ -10,13 +10,13 @@ class BeerSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Beer
-        fields = ("id", "name", "price", "description", "specifications", "bar")
+        fields = "__all__"
 
 
 class BarSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Bar
-        fields = ("id", "name", "website")
+        exclude = ("updated",)
 
 
 class BarBranchSerializer(serializers.HyperlinkedModelSerializer):
@@ -24,4 +24,4 @@ class BarBranchSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = BarBranch
-        fields = ("id", "bar", "metro", "address", "latitude", "longitude")
+        fields = "__all__"
