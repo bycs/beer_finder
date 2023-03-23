@@ -72,14 +72,14 @@ async def beer_filter_finish(update: Update, context: ContextTypes.DEFAULT_TYPE)
     assert context.user_data is not None, "context.user_data must not be None"
 
     markup = ReplyKeyboardRemove()
-    if update.message.text == "Показать все" or "Показать результаты":
+    if update.message.text == "Показать все" or update.message.text == "Показать результаты":
         request = None
     else:
         request = update.message.text
 
     context.user_data["beer_filter"]["request"] = request
     bar = context.user_data["beer_filter"]["bar"]
-    search_terms = context.user_data["beer_filter"]["search_terms"]
+    search_terms: str = context.user_data["beer_filter"]["search_terms"]
 
     bar_text = get_bar_text(bar)
     search_text = get_search_text_text(search_terms, request)
