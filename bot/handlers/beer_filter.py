@@ -15,7 +15,7 @@ from bot.db import db
 from bot.db import logging_commands
 from bot.db import logging_search_query
 from bot.handlers.bar_branch_geo import choosing_bar
-from bot.utils import list_separator
+from bot.utils.utils import list_separator
 
 
 async def beer_filter_step_2(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -34,7 +34,6 @@ async def beer_filter_step_2(update: Update, context: ContextTypes.DEFAULT_TYPE)
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Выбери фильтр (кнопкой)"
     await update.message.reply_text(text, reply_markup=markup)
-    logging_commands(db, update, "beer_filter__step_2")
     return "step_3"
 
 
@@ -63,7 +62,6 @@ async def beer_filter_step_3(update: Update, context: ContextTypes.DEFAULT_TYPE)
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Выбери фильтр (кнопкой)"
     await update.message.reply_text(text, reply_markup=markup)
-    logging_commands(db, update, "beer_filter__step_3")
     return "finish"
 
 
@@ -99,7 +97,7 @@ async def beer_filter_finish(update: Update, context: ContextTypes.DEFAULT_TYPE)
         await update.message.reply_text(text)
     search_query = context.user_data["beer_filter"]
     logging_search_query(db, update, search_query, "beer_filter")
-    logging_commands(db, update, "beer_filter__finish")
+    logging_commands(db, update, "beer_filter")
     return ConversationHandler.END
 
 
