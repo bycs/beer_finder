@@ -1,3 +1,5 @@
+import time
+
 from django.core.exceptions import PermissionDenied
 
 
@@ -19,3 +21,14 @@ def staff_required(function):
         return function(request, *args, **kwargs)
 
     return _inner
+
+
+def limit_requests(second: int | float):
+    def limit_requests_decorator(func):
+        def wrapper(*args, **kwargs):
+            time.sleep(second)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return limit_requests_decorator

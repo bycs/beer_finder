@@ -16,6 +16,7 @@ class BeersViewSet(viewsets.ModelViewSet):
     http_method_names = ["get"]
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = {
+        "bar__uuid": ["in"],
         "bar__name": ["in"],
         "name": ["contains"],
         "price": ["gte", "lte"],
@@ -24,6 +25,8 @@ class BeersViewSet(viewsets.ModelViewSet):
 
 
 class TopSpecKeyViewSet(viewsets.ViewSet):
+    http_method_names = ["get"]
+
     def list(self, request: Request) -> Response:
         params = dict(request.query_params)
         bar__name = params.get("bar__name")

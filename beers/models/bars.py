@@ -27,7 +27,9 @@ class BarBranch(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     bar = models.ForeignKey(Bar, on_delete=models.CASCADE, verbose_name="Bar")
     address = models.CharField(max_length=255, null=False, verbose_name="Address")
-    metro = models.CharField(max_length=255, null=True, default=True, verbose_name="Metro")
+    metro = models.CharField(
+        max_length=255, null=True, default=None, blank=True, verbose_name="Metro"
+    )
     latitude = models.FloatField(null=True, default=None, blank=True, verbose_name="Latitude")
     longitude = models.FloatField(null=True, default=None, blank=True, verbose_name="Longitude")
 
