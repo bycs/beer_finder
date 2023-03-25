@@ -13,7 +13,7 @@ class BarAdmin(admin.ModelAdmin):
 
 class BarBranchAdmin(admin.ModelAdmin):
     model = BarBranch
-    list_display = ("barbranch_name", "address")
+    list_display = ("bar_branch_name", "address")
     list_filter = ("bar__name", "metro")
     search_fields = ("bar__name", "metro", "address")
 

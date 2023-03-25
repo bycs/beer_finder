@@ -1,9 +1,12 @@
+import uuid
+
 from django.db import models
 
 from beers.logics.geo import YandexMapGeo
 
 
 class Bar(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255, unique=True, verbose_name="Name")
     website = models.URLField(unique=True, verbose_name="Website")
     updated = models.DateTimeField(null=True, default=None, verbose_name="Updated")
@@ -21,17 +24,18 @@ class Bar(models.Model):
 
 
 class BarBranch(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     bar = models.ForeignKey(Bar, on_delete=models.CASCADE, verbose_name="Bar")
-    address = models.CharField(max_length=255, unique=True, verbose_name="Address")
-    metro = models.CharField(max_length=255, verbose_name="Metro")
-    latitude = models.FloatField(null=True, default=None, verbose_name="Latitude")
-    longitude = models.FloatField(null=True, default=None, verbose_name="Longitude")
+    address = models.CharField(max_length=255, null=False, verbose_name="Address")
+    metro = models.CharField(max_length=255, null=True, default=True, verbose_name="Metro")
+    latitude = models.FloatField(null=True, default=None, blank=True, verbose_name="Latitude")
+    longitude = models.FloatField(null=True, default=None, blank=True, verbose_name="Longitude")
 
     @property
-    def barbranch_name(self) -> str:
+    def bar_branch_name(self) -> str:
         return f"{self.bar.name} - {self.metro}"
 
-    barbranch_name.fget.short_description = "BarBranch Name"  # type: ignore[attr-defined]
+    bar_branch_name.fget.short_description = "BarBranch Name"  # type: ignore[attr-defined]
 
     @property
     def point(self) -> str:
@@ -47,10 +51,10 @@ class BarBranch(models.Model):
         verbose_name_plural = "BarBranches"
 
     def __str__(self) -> str:
-        return f"{self.barbranch_name}"
+        return f"{self.bar_branch_name}"
 
     def __repr__(self) -> str:
-        return f"<BarBranch: {self.barbranch_name}>"
+        return f"<BarBranch: {self.bar_branch_name}>"
 
     def get_geocode(self) -> None:
         geo = YandexMapGeo()

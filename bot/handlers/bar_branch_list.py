@@ -64,7 +64,7 @@ async def bar_branch_list_finish(update: Update, context: ContextTypes.DEFAULT_T
             maps_link = f"{ya}?ll={bar.point}&z=16&text={bar.bar.name.replace(' ', '%20')}"
             address = f"<a href='{maps_link}'>{bar.address}</a>"
             address_text = f"📍 {address}"
-            text += f"🍻 {bar.barbranch_name}\n{address_text}\n\n{bar.bar.website}\n\n\n"
+            text += f"🍻 {bar.bar_branch_name}\n{address_text}\n\n{bar.bar.website}\n\n\n"
         response_text = "Сейчас мы знаем о следующих адресах:\n\n" + text
 
     await update.message.reply_text(
