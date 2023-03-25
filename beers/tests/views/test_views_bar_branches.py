@@ -1,3 +1,5 @@
+import uuid
+
 from typing import Any
 from typing import Dict
 
@@ -23,10 +25,11 @@ from beers.models.bars import BarBranch
 
 def express_barbranch(barbranch: BarBranch) -> Dict[str, Any]:
     return {
-        "id": barbranch.id,
-        "bar": barbranch.bar.name,
+        "pk": barbranch.pk,
         "address": barbranch.address,
         "metro": barbranch.metro,
+        "bar_name": barbranch.bar.name,
+        "bar_pk": barbranch.bar.pk,
         "latitude": barbranch.latitude,
         "longitude": barbranch.longitude,
     }
@@ -37,9 +40,9 @@ express_barbranches = pluralized(express_barbranch)
 
 @pytest.mark.django_db
 class TestBarBranchViewSet(ViewSetTest):
-    list_url = lambda_fixture(lambda: url_for("barbranches-list"))
+    list_url = lambda_fixture(lambda: url_for("barbranch-list"))
 
-    detail_url = lambda_fixture(lambda barbranch: url_for("barbranches-detail", barbranch.pk))
+    detail_url = lambda_fixture(lambda barbranch: url_for("barbranch-detail", barbranch.pk))
 
     class TestList(UsesGetMethod, UsesListEndpoint, Returns200):
         barbranches = lambda_fixture(
@@ -78,8 +81,11 @@ class TestBarBranchViewSet(ViewSetTest):
         )
 
         def test_it_returns_barbranches(self, barbranches, results):
-            expected = express_barbranches(sorted(barbranches, key=lambda barbranch: barbranch.id))
-            actual = sorted(results, key=lambda barbranch: barbranch["id"])
+            expected = express_barbranches(sorted(barbranches, key=lambda barbranch: barbranch.pk))
+            actual = sorted(results, key=lambda barbranch: barbranch["pk"])
+            for item in actual:
+                item["pk"] = uuid.UUID(item["pk"])
+                item["bar_pk"] = uuid.UUID(item["bar_pk"])
             assert expected == actual
 
     class TestCreate(UsesPostMethod, UsesListEndpoint, Returns405):
@@ -107,6 +113,8 @@ class TestBarBranchViewSet(ViewSetTest):
         def test_it_returns_barbranch(self, barbranch, json):
             expected = express_barbranch(barbranch)
             actual = json
+            actual["pk"] = uuid.UUID(actual["pk"])
+            actual["bar_pk"] = uuid.UUID(actual["bar_pk"])
             assert expected == actual
 
     class TestUpdate(UsesPatchMethod, UsesDetailEndpoint, Returns405):

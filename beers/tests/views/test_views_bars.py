@@ -1,3 +1,5 @@
+import uuid
+
 from typing import Any
 from typing import Dict
 
@@ -21,7 +23,7 @@ from beers.models.bars import Bar
 
 
 def express_bar(bar: Bar) -> Dict[str, Any]:
-    return {"id": bar.id, "name": bar.name, "website": bar.website}
+    return {"pk": bar.pk, "name": bar.name, "website": bar.website}
 
 
 express_bars = pluralized(express_bar)
@@ -29,9 +31,9 @@ express_bars = pluralized(express_bar)
 
 @pytest.mark.django_db
 class TestBarViewSet(ViewSetTest):
-    list_url = lambda_fixture(lambda: url_for("bars-list"))
+    list_url = lambda_fixture(lambda: url_for("bar-list"))
 
-    detail_url = lambda_fixture(lambda bar: url_for("bars-detail", bar.pk))
+    detail_url = lambda_fixture(lambda bar: url_for("bar-detail", bar.pk))
 
     class TestList(UsesGetMethod, UsesListEndpoint, Returns200):
         bars = lambda_fixture(
@@ -47,8 +49,10 @@ class TestBarViewSet(ViewSetTest):
         )
 
         def test_it_returns_bars(self, bars, results):
-            expected = express_bars(sorted(bars, key=lambda bar: bar.id))
-            actual = sorted(results, key=lambda bar: bar["id"])
+            expected = express_bars(sorted(bars, key=lambda bar: bar.pk))
+            actual = sorted(results, key=lambda bar: bar["pk"])
+            for item in actual:
+                item["pk"] = uuid.UUID(item["pk"])
             assert expected == actual
 
     class TestCreate(UsesPostMethod, UsesListEndpoint, Returns405):
@@ -60,6 +64,7 @@ class TestBarViewSet(ViewSetTest):
         def test_it_returns_bar(self, bar, json):
             expected = express_bar(bar)
             actual = json
+            actual["pk"] = uuid.UUID(actual["pk"])
             assert expected == actual
 
     class TestUpdate(UsesPatchMethod, UsesDetailEndpoint, Returns405):

@@ -99,7 +99,7 @@ async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TY
             maps_link = f"{ya}?ll={bar.point}&z=16&text={bar.bar.name.replace(' ', '%20')}"
             address = f"<a href='{maps_link}'>{bar.address}</a>"
             address_text = f"📍 {address}\n\n"
-            name_text = f"🍻 {bar.barbranch_name} ~{distances_sorted[bar]} км\n"
+            name_text = f"🍻 {bar.bar_branch_name} ~{distances_sorted[bar]} км\n"
             website_text = f"{bar.bar.website}\n\n\n"
             text += name_text + address_text + website_text
         response_text = "Самые близкие бары:\n\n" + text

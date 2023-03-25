@@ -24,6 +24,7 @@ class BarBranchesViewSet(viewsets.ModelViewSet):
     http_method_names = ["get"]
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = {
+        "bar__uuid": ["in"],
         "bar__name": ["in"],
         "address": ["contains"],
         "metro": ["in"],

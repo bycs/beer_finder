@@ -11,7 +11,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from beers.parsers.base import BaseBar
 from beers.parsers.base import clear_text
-from beers.parsers.base import limit_requests
 
 
 options = Options()
@@ -91,7 +90,6 @@ class Lambic(BaseBar):
             print("Specifications not found!")
         return specifications_dict
 
-    @limit_requests(random.uniform(4.5, 8.5))
     def parse_data(self, unparsed_data: str) -> list[dict]:
         soup = BeautifulSoup(unparsed_data, "html.parser")
 

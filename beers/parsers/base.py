@@ -1,10 +1,11 @@
-import time
+import random
 
 from dataclasses import dataclass
 from typing import Literal
 
 import requests
 
+from beers.decorators import limit_requests
 from beers.models.beers import Beer
 
 
@@ -26,6 +27,7 @@ def clear_text(text: str) -> str:
     return text
 
 
+@limit_requests(random.uniform(4.5, 8.5))
 def get_html(url: str) -> str | Literal[False]:
     try:
         result = requests.get(url, verify=False)
@@ -34,17 +36,6 @@ def get_html(url: str) -> str | Literal[False]:
     except (requests.RequestException, ValueError):
         print(f"Error! Failed to connect to {url}")
         return False
-
-
-def limit_requests(second: int | float):
-    def limit_requests_decorator(func):
-        def wrapper(*args, **kwargs):
-            time.sleep(second)
-            return func(*args, **kwargs)
-
-        return wrapper
-
-    return limit_requests_decorator
 
 
 @dataclass
