@@ -19,7 +19,7 @@ to plot a route to a suitable bar.
 * As a user, you can see the list of available bars:
 ![](readme_files/first_step.gif)
 * As a user, you can choose the nearest bar by sending the geolocation 
-to the bot or simply typing your address:
+to the bot or simply typing address:
 ![](readme_files/second_step.gif)
 * As a user, you can get bar coordinates based on metro station:
 ![](readme_files/third_step.gif)
