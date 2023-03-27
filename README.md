@@ -11,16 +11,16 @@ The Django project with monolithic architecture aims to parse data of beer
 from Moscow bars and store it in a PostgreSQL database. 
 The application is built using the Django web framework, with Django Rest Framework 
 (DRF) for exposing the data via RESTful APIs, and Python-telegram-bot for providing 
-data to users through a Telegram bot.
+data to users through a Telegram bot. Application statistics are collected in MongoDB.
 The functionality of the bot also includes the use of the user's geolocation 
 to plot a route to a suitable bar.
 
 ### [Bot](https://t.me/BeersFinder_bot) preview in few steps:
 * As a user You can see the list of available bars:
 ![](./readme_files/first_step.gif)
-* As a user You can select the nearest bar by sending his geolocation to the bot:
+* As a user, you can choose the nearest bar by sending the geolocation to the bot or simply typing your address:
 ![](./readme_files/second_step.gif)
-* As a user You can get the coordinates of the bar based on the nearest subway to the user:
+* As a user you can get bar coordinates based on metro station:
 ![](./readme_files/third_step.gif)
 * As a user You can find beer based on the available filters or their preferences:
 ![](./readme_files/last_step.gif)
