@@ -7,6 +7,7 @@ from telegram.ext import ApplicationBuilder
 from telegram.ext import CommandHandler
 from telegram.ext import ConversationHandler
 
+from bot.handlers.admin import handler_statistics
 from bot.handlers.bar_branch_geo import handler_bar_branch_geo
 from bot.handlers.bar_branch_list import handler_bar_branch_list
 from bot.handlers.bars import handler_bars
@@ -42,6 +43,7 @@ handlers: list[CommandHandler | ConversationHandler] = [
     handler_bar_branch_geo,
     handler_bar_branch_list,
     handler_beer_filter,
+    handler_statistics,
 ]
 
 

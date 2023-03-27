@@ -25,6 +25,7 @@ DB_PASS = os.getenv("DB_PASS", "pass")
 DB_NAME = os.getenv("DB_NAME", "db")
 
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "token")
+TELEGRAM_ADMINS_ID = tuple(map(int, os.getenv("TELEGRAM_ADMINS_ID", "0").split(" ")))
 
 MONGO_HOST = os.getenv("MONGO_HOST", "localhost")
 MONGO_USER = os.getenv("MONGO_INITDB_ROOT_USERNAME", "user")

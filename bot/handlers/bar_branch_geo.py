@@ -19,7 +19,7 @@ from beers.models.bars import Bar
 from bot.db import db
 from bot.db import logging_commands
 from bot.db import logging_search_query
-from bot.utils import list_separator
+from bot.utils.utils import list_separator
 
 
 async def choosing_bar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -31,7 +31,6 @@ async def choosing_bar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> st
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Выбери бар (кнопкой)"
     await update.message.reply_text(text, reply_markup=markup)
-    logging_commands(db, update, "choosing_bar")
     return "step_2"
 
 
@@ -49,7 +48,6 @@ async def get_address_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Отправьте геопозицию или введите адрес"
     await update.message.reply_text(text, reply_markup=markup)
-    logging_commands(db, update, "bar_branch_geo__step_2")
     return "finish"
 
 
@@ -101,7 +99,7 @@ async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TY
             maps_link = f"{ya}?ll={bar.point}&z=16&text={bar.bar.name.replace(' ', '%20')}"
             address = f"<a href='{maps_link}'>{bar.address}</a>"
             address_text = f"📍 {address}\n\n"
-            name_text = f"🍻 {bar.barbranch_name} ~{distances_sorted[bar]} км\n"
+            name_text = f"🍻 {bar.bar_branch_name} ~{distances_sorted[bar]} км\n"
             website_text = f"{bar.bar.website}\n\n\n"
             text += name_text + address_text + website_text
         response_text = "Самые близкие бары:\n\n" + text
@@ -114,7 +112,7 @@ async def bar_branch_geo_finish(update: Update, context: ContextTypes.DEFAULT_TY
     )
     search_query = context.user_data["bar_branch_geo"]
     logging_search_query(db, update, search_query, "bar_branch_geo")
-    logging_commands(db, update, "bar_branch_geo__finish")
+    logging_commands(db, update, "bar_branch_geo")
     return ConversationHandler.END
 
 

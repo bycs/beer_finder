@@ -13,7 +13,7 @@ from bot.db import db
 from bot.db import logging_commands
 from bot.db import logging_search_query
 from bot.handlers.bar_branch_geo import choosing_bar
-from bot.utils import list_separator
+from bot.utils.utils import list_separator
 
 
 async def get_metro_bar_branch(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -38,7 +38,6 @@ async def get_metro_bar_branch(update: Update, context: ContextTypes.DEFAULT_TYP
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
     text = "Выбери станцию метро (кнопкой)"
     await update.message.reply_text(text, reply_markup=markup)
-    logging_commands(db, update, "bar_branch_list__step_2")
     return "finish"
 
 
@@ -65,7 +64,7 @@ async def bar_branch_list_finish(update: Update, context: ContextTypes.DEFAULT_T
             maps_link = f"{ya}?ll={bar.point}&z=16&text={bar.bar.name.replace(' ', '%20')}"
             address = f"<a href='{maps_link}'>{bar.address}</a>"
             address_text = f"📍 {address}"
-            text += f"🍻 {bar.barbranch_name}\n{address_text}\n\n{bar.bar.website}\n\n\n"
+            text += f"🍻 {bar.bar_branch_name}\n{address_text}\n\n{bar.bar.website}\n\n\n"
         response_text = "Сейчас мы знаем о следующих адресах:\n\n" + text
 
     await update.message.reply_text(
@@ -76,7 +75,7 @@ async def bar_branch_list_finish(update: Update, context: ContextTypes.DEFAULT_T
     )
     search_query = context.user_data["bar_branch_list"]
     logging_search_query(db, update, search_query, "bar_branch_list")
-    logging_commands(db, update, "bar_branch_list__finish")
+    logging_commands(db, update, "bar_branch_list")
     return ConversationHandler.END
 
 

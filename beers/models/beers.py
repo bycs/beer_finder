@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from beers.managers.beers import BeerManager
@@ -5,6 +7,7 @@ from beers.models.bars import Bar
 
 
 class Beer(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255, verbose_name="Name")
     price = models.IntegerField(null=True, default=None, verbose_name="Price")
     description = models.TextField(null=True, default=None, verbose_name="Description")

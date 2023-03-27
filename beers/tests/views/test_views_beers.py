@@ -1,3 +1,5 @@
+import uuid
+
 from typing import Any
 from typing import Dict
 
@@ -23,12 +25,13 @@ from beers.models.beers import Beer
 
 def express_beer(beer: Beer) -> Dict[str, Any]:
     return {
-        "id": beer.id,
+        "pk": beer.pk,
         "name": beer.name,
         "price": beer.price,
         "description": beer.description,
         "specifications": beer.specifications,
-        "bar": beer.bar.name,
+        "bar_name": beer.bar.name,
+        "bar_pk": beer.bar.pk,
     }
 
 
@@ -37,9 +40,9 @@ express_beers = pluralized(express_beer)
 
 @pytest.mark.django_db
 class TestBeerViewSet(ViewSetTest):
-    list_url = lambda_fixture(lambda: url_for("beers-list"))
+    list_url = lambda_fixture(lambda: url_for("beer-list"))
 
-    detail_url = lambda_fixture(lambda beer: url_for("beers-detail", beer.pk))
+    detail_url = lambda_fixture(lambda beer: url_for("beer-detail", beer.pk))
 
     class TestList(UsesGetMethod, UsesListEndpoint, Returns200):
         beers = lambda_fixture(
@@ -76,8 +79,11 @@ class TestBeerViewSet(ViewSetTest):
         )
 
         def test_it_returns_beers(self, beers, results):
-            expected = express_beers(sorted(beers, key=lambda beer: beer.id))
-            actual = sorted(results, key=lambda beer: beer["id"])
+            expected = express_beers(sorted(beers, key=lambda beer: beer.pk))
+            actual = sorted(results, key=lambda beer: beer["pk"])
+            for item in actual:
+                item["pk"] = uuid.UUID(item["pk"])
+                item["bar_pk"] = uuid.UUID(item["bar_pk"])
             assert expected == actual
 
     class TestCreate(UsesPostMethod, UsesListEndpoint, Returns405):
@@ -105,6 +111,8 @@ class TestBeerViewSet(ViewSetTest):
         def test_it_returns_beer(self, beer, json):
             expected = express_beer(beer)
             actual = json
+            actual["pk"] = uuid.UUID(actual["pk"])
+            actual["bar_pk"] = uuid.UUID(actual["bar_pk"])
             assert expected == actual
 
     class TestUpdate(UsesPatchMethod, UsesDetailEndpoint, Returns405):

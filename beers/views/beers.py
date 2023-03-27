@@ -1,3 +1,5 @@
+import uuid
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.request import Request
@@ -14,6 +16,7 @@ class BeersViewSet(viewsets.ModelViewSet):
     http_method_names = ["get"]
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = {
+        "bar__uuid": ["in"],
         "bar__name": ["in"],
         "name": ["contains"],
         "price": ["gte", "lte"],
@@ -22,6 +25,8 @@ class BeersViewSet(viewsets.ModelViewSet):
 
 
 class TopSpecKeyViewSet(viewsets.ViewSet):
+    http_method_names = ["get"]
+
     def list(self, request: Request) -> Response:
         params = dict(request.query_params)
         bar__name = params.get("bar__name")
@@ -31,11 +36,11 @@ class TopSpecKeyViewSet(viewsets.ViewSet):
 
 class FilterBeersViewSet(viewsets.ViewSet):
     def list(
-        self, request: Request, bar_id: int | None = None, **kwargs: tuple[dict[str, str]]
+        self, request: Request, bar_id: uuid.UUID | None = None, **kwargs: tuple[dict[str, str]]
     ) -> Response:
         beers = Beer.objects.all()
         if bar_id:
-            beers = Beer.objects.filter(bar_id=bar_id)
+            beers = Beer.objects.filter(bar__pk=bar_id)
         if kwargs:
             for key, value in kwargs.items():
                 beers = beers.filter(specifications__contains={key: value})
