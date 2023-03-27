@@ -18,8 +18,8 @@ to plot a route to a suitable bar.
 ### [Bot](https://t.me/BeersFinder_bot) preview in few steps:
 * As a user You can see the list of available bars:
 ![](readme_files/first_step.gif)
-* As a user, you can choose the nearest bar by sending the geolocation to the bot or simply typing 
-your address:
+* As a user, you can choose the nearest bar by sending the geolocation to the bot 
+or simply typing your address:
 ![](readme_files/second_step.gif)
 * As a user you can get bar coordinates based on metro station:
 ![](readme_files/third_step.gif)
@@ -43,14 +43,14 @@ your address:
 >Swagger UI:
 > >http://79.137.198.62/api/v1/docs/
 
-| Router                        | Description                           |
-|:------------------------------|:--------------------------------------|
-| GET/api/v1/bar_branches/      | Returns bar branches data             |
-| GET/api/v1/bar_branches/{id}/ | Returns current bar branch data by id |
-| GET/api/v1/bars/              | Returns bars data                     |
-| GET/api/v1/bars/{id}/         | Returns current bar data by id        |
-| GET/api/v1/beers/             | Returns beer data                     |
-| GET/api/v1/beers/{id}/        | Returns current beer data             |
+| Router                          | Description                           |
+|:--------------------------------|:--------------------------------------|
+| GET/api/v1/bar_branches/        | Returns bar branches data             |
+| GET/api/v1/bar_branches/{uuid}/ | Returns current bar branch data by pk |
+| GET/api/v1/bars/                | Returns bars data                     |
+| GET/api/v1/bars/{uuid}/         | Returns current bar data by pk        |
+| GET/api/v1/beers/               | Returns beer data                     |
+| GET/api/v1/beers/{uuid}/        | Returns current beer data by pk       |
 
 ### Join the development:
 * Repeat the first two steps from the ```Installation```
