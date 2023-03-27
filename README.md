@@ -17,13 +17,13 @@ to plot a route to a suitable bar.
 
 ### [Bot](https://t.me/BeersFinder_bot) preview in few steps:
 * As a user You can see the list of available bars:
-![](./readme_files/first_step.gif)
+![](readme_files/first_step.gif)
 * As a user, you can choose the nearest bar by sending the geolocation to the bot or simply typing your address:
-![](./readme_files/second_step.gif)
+![](readme_files/second_step.gif)
 * As a user you can get bar coordinates based on metro station:
-![](./readme_files/third_step.gif)
-* As a user You can find beer based on the available filters or their preferences:
-![](./readme_files/last_step.gif)
+![](readme_files/third_step.gif)
+* As a user You can find beer based on the available filters or your preferences:
+![](readme_files/last_step.gif)
 
 ### Installation:
 * Clone the repository to a local directory:
