@@ -19,7 +19,7 @@ python-telegram-bot = { extras = ["socks"], version = "20.2" }
 pymongo = "4.3.3"
 # Parsing
 requests = "2.28.2"
-beautifulsoup4 = "4.12.0"
+beautifulsoup4 = "4.12.2"
 selenium = "4.8.3"
 webdriver-manager = "3.8.5"
 # Other
