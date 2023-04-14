@@ -21,7 +21,7 @@ pymongo = "4.3.3"
 requests = "2.28.2"
 beautifulsoup4 = "4.12.0"
 selenium = "4.8.3"
-webdriver-manager = "3.8.5"
+webdriver-manager = "3.8.6"
 # Other
 python-dotenv = "1.0.0"
 
