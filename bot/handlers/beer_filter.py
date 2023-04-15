@@ -49,7 +49,6 @@ async def beer_filter_step_3(update: Update, context: ContextTypes.DEFAULT_TYPE)
         markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True)
         text = "Попробуй в следующий раз поставить фильтры"
         await update.message.reply_text(text, reply_markup=markup)
-        logging_commands(db, update, "beer_filter__step_3")
         return "finish"
     else:
         search_terms = update.message.text

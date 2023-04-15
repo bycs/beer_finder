@@ -9,7 +9,7 @@ from config import MONGO_URI
 
 client: MongoClient = MongoClient(MONGO_URI)
 
-db = client.get_database("bot_db")
+db: Database = client.get_database("bot_db")
 
 
 def logging_commands(database: Database, update: Update, command: str) -> None:
@@ -55,5 +55,5 @@ def get_number_use_command(database: Database) -> dict[str, str | int] | None:
 
 
 def get_number_unique_users(database: Database) -> int:
-    result = database.get_collection("log_commands").distinct("user_id")
+    result: list[int] = database.get_collection("log_commands").distinct("user_id")
     return len(result)
